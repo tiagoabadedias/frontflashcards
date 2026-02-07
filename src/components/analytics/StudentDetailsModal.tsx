@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams } from 'react-router-dom';
 import { analyticsService } from '../../services/analyticsService';
-import { X, User, CheckCircle, XCircle, Clock, MessageSquare, Play, Pause } from 'lucide-react';
+import { X, User, CheckCircle, Clock, MessageSquare, Play, Pause } from 'lucide-react';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 interface StudentDetailsModalProps {
@@ -197,7 +197,7 @@ export const StudentDetailsModal: React.FC<StudentDetailsModalProps> = ({ studen
                 </h3>
                 
                 <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
-                  {data.history.map((interaction, index) => (
+                  {data.history.map((interaction) => (
                     <div key={interaction.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
                       
                       {/* Icon Indicator */}

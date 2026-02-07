@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
 import { CreateCampaignData, Campaign } from '../types';
 import { EditCampaignModal } from '../components/EditCampaignModal';
-import { Plus, Edit, Trash2, Power, Calendar, Users, Play, BarChart3, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Power, Users, Play, BarChart3, Search } from 'lucide-react';
 import { format } from 'date-fns';
 
 export const CampaignsPage = () => {
@@ -239,7 +239,7 @@ export const CampaignsPage = () => {
                   reset();
                 }}
                 className="btn btn-secondary"
-              >
+                >
                 Cancelar
               </button>
               <button

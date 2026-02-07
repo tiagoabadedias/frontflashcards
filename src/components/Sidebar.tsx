@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Target, HelpCircle, Users, BarChart3, LogOut, Settings } from 'lucide-react';
+import { Home, Target, HelpCircle, Users, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const navigation = [

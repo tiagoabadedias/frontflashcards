@@ -1,11 +1,10 @@
-import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useCampaigns } from '../hooks/useCampaigns';
 import { dashboardService } from '../services/dashboardService';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
 import { CampaignPerformanceChart } from '../components/analytics/CampaignPerformanceChart';
-import { Target, HelpCircle, TrendingUp, CheckCircle, Clock, Users, MessageSquare, BarChart3 } from 'lucide-react';
+import { Target, TrendingUp, CheckCircle, Clock, Users, MessageSquare, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Dashboard = () => {

@@ -132,7 +132,6 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
             {activeSection === 'groups' && (
               <GroupsSection 
                 formData={formData}
-                setFormData={setFormData}
                 selectedGroupToAdd={selectedGroupToAdd}
                 setSelectedGroupToAdd={setSelectedGroupToAdd}
                 groups={groups}
@@ -287,7 +286,6 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
 // Componente para seção de grupos
 interface GroupsSectionProps {
   formData: any;
-  setFormData: any;
   selectedGroupToAdd: string;
   setSelectedGroupToAdd: any;
   groups: any[];
@@ -302,7 +300,6 @@ interface GroupsSectionProps {
 
 const GroupsSection: React.FC<GroupsSectionProps> = ({
   formData,
-  setFormData,
   selectedGroupToAdd,
   setSelectedGroupToAdd,
   groups,
