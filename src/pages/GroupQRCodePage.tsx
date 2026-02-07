@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
-import { QrCode, Users, ExternalLink } from 'lucide-react';
+import { useParams, Link } from 'react-router-dom';
+import { QrCode, Users, ExternalLink, Check } from 'lucide-react';
 import { useGroups } from '../hooks/useGroups';
 
 export const GroupQRCodePage = () => {
@@ -10,26 +10,31 @@ export const GroupQRCodePage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
       </div>
     );
   }
 
   if (!group) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="text-center bg-white p-8 rounded-2xl shadow-xl">
-          <QrCode className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Grupo não encontrado</h2>
-          <p className="text-gray-600">O grupo que você está procurando não existe ou foi removido.</p>
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
+        <div className="text-center max-w-md mx-auto p-8">
+          <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <QrCode className="h-8 w-8 text-slate-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Grupo não encontrado</h2>
+          <p className="text-slate-600 mb-8">O grupo que você está procurando não existe ou foi removido.</p>
+          <Link to="/" className="px-6 py-3 bg-indigo-600 text-white rounded-full font-medium hover:bg-indigo-700 transition-colors">
+            Voltar para o início
+          </Link>
         </div>
       </div>
     );
   }
 
   const whatsappText = `Quero%20me%20inscrever%20no%20grupo%20FlashCards%20${group._id}`;
-  const whatsappUrl = `https://wa.me/5551981354122?text=${whatsappText}`;
+  const whatsappUrl = `https://wa.me/555121654734?text=${whatsappText}`;
   const qrCodeUrl = `https://api-qrcode-three.vercel.app/qrcode?text=${encodeURIComponent(whatsappUrl)}`;
 
   const handleWhatsAppClick = () => {
@@ -37,102 +42,121 @@ export const GroupQRCodePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
-      <div className="max-w-2xl mx-auto px-4">
+    <div className="min-h-screen bg-slate-50 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden">
+      {/* Background Gradients */}
+      <div className="absolute top-0 right-0 -mr-40 -mt-40 w-[800px] h-[800px] bg-gradient-to-bl from-indigo-100/50 to-purple-100/30 rounded-full blur-3xl -z-10 opacity-70"></div>
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[600px] h-[600px] bg-gradient-to-tr from-blue-100/40 to-teal-100/30 rounded-full blur-3xl -z-10 opacity-70"></div>
 
-        {/* Card principal */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header do card */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6 text-white">
-            <div className="flex items-center mb-2">
-              <Users className="w-8 h-8 mr-3" />
-              <h1 className="text-2xl font-bold">Participe do Grupo</h1>
+      {/* Navbar Minimalista */}
+      <nav className="absolute top-0 left-0 w-full p-6 z-10">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200">E</div>
+            <span className="text-xl font-bold tracking-tight text-slate-900">ExplicaAI</span>
+          </Link>
+        </div>
+      </nav>
+
+      <div className="min-h-screen flex items-center justify-center p-4 pt-24">
+        <div className="max-w-4xl w-full grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+          
+          {/* Coluna da Esquerda - Informações */}
+          <div className="lg:col-span-3 text-center lg:text-left order-2 lg:order-1">
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-semibold mb-6">
+              <Users className="w-3 h-3 mr-2" />
+              Convite para Grupo
             </div>
-            <h2 className="text-xl font-semibold opacity-90">{group.name}</h2>
-            {group.description && (
-              <p className="text-blue-100 mt-2">{group.description}</p>
-            )}
-          </div>
+            
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
+              Junte-se ao grupo <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">
+                {group.name}
+              </span>
+            </h1>
+            
+            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              {group.description || "Participe deste grupo para receber atividades e enviar suas respostas por áudio."}
+            </p>
 
-          {/* Conteúdo do card */}
-          <div className="p-8">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Escaneie o QR Code para se inscrever via WhatsApp
-              </h3>
-              
-              {/* QR Code */}
-              <div className="bg-white p-6 rounded-2xl shadow-lg inline-block mb-6 border-2 border-gray-100">
-                <img
-                  src={qrCodeUrl}
-                  alt="QR Code para participar do grupo"
-                  className="w-64 h-64 mx-auto"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjggODBWMTc2IiBzdHJva2U9IiM2QjczODAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik04MCAxMjhIMTc2IiBzdHJva2U9IiM2QjczODAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==';
-                  }}
-                />
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <button
+                onClick={handleWhatsAppClick}
+                className="px-8 py-4 bg-indigo-600 text-white rounded-full font-bold text-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 shadow-xl shadow-indigo-200 hover:-translate-y-1"
+              >
+                <ExternalLink className="w-5 h-5" />
+                Entrar via WhatsApp
+              </button>
+            </div>
+
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+              <div className="flex items-start gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                <div className="bg-green-100 p-2 rounded-full mt-1">
+                  <Check className="w-4 h-4 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900">Responda por áudio</h3>
+                  <p className="text-sm text-slate-500 mt-1">Envie suas explicações falando naturalmente no WhatsApp.</p>
+                </div>
               </div>
-
-              <div className="space-y-4">
-                <p className="text-gray-600">
-                  Ou clique no botão abaixo para abrir o WhatsApp diretamente:
-                </p>
-
-                <button
-                  onClick={handleWhatsAppClick}
-                  className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-lg hover:shadow-xl"
-                >
-                  <ExternalLink className="w-5 h-5 mr-2" />
-                  Abrir WhatsApp
-                </button>
-
-                <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-900 mb-2">Como funciona:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1 text-left max-w-md mx-auto">
-                    <li>• Escaneie o QR Code com seu celular</li>
-                    <li>• Você será direcionado para o WhatsApp</li>
-                    <li>• Uma mensagem de inscrição será criada automaticamente</li>
-                    <li>• Envie a mensagem para confirmar sua participação</li>
-                  </ul>
+              <div className="flex items-start gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                <div className="bg-indigo-100 p-2 rounded-full mt-1">
+                  <Check className="w-4 h-4 text-indigo-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900">Correção Imediata</h3>
+                  <p className="text-sm text-slate-500 mt-1">Receba feedback da IA sobre sua resposta em segundos.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Informações do grupo */}
-          <div className="bg-gray-50 px-8 py-6 border-t">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Status do grupo:</p>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  group.isActive 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {group.isActive ? 'Ativo' : 'Inativo'}
-                </span>
+          {/* Coluna da Direita - QR Code Card */}
+          <div className="lg:col-span-2 order-1 lg:order-2 flex justify-center">
+            <div className="relative bg-white p-8 rounded-[2.5rem] shadow-2xl shadow-indigo-500/10 border border-slate-100 max-w-sm w-full transform hover:scale-[1.02] transition-transform duration-500">
+              <div className="absolute -top-6 -right-6 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 hidden sm:block">
+                <div className="flex items-center gap-2">
+                  <div className="bg-indigo-100 p-2 rounded-full">
+                    <QrCode className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 font-semibold uppercase">Scan me</p>
+                    <p className="text-sm font-bold text-slate-900">Acesso Rápido</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-gray-600">Participantes:</p>
-                <span className="font-semibold text-gray-900">
-                  {group.participants.length}
-                </span>
+
+              <div className="text-center">
+                <p className="text-sm font-semibold text-slate-500 mb-6 uppercase tracking-wider">Escaneie para entrar</p>
+                
+                <div className="bg-white p-4 rounded-3xl border-2 border-indigo-50 shadow-inner inline-block mb-6">
+                  <img
+                    src={qrCodeUrl}
+                    alt="QR Code"
+                    className="w-48 h-48 mx-auto rounded-xl"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjggODBWMTc2IiBzdHJva2U9IiM2QjczODAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik04MCAxMjhIMTc2IiBzdHJva2U9IiM2QjczODAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==';
+                    }}
+                  />
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-sm text-slate-500 bg-slate-50 py-2 px-4 rounded-full mx-auto w-fit">
+                  <span className={`w-2 h-2 rounded-full ${group.isActive ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                  {group.isActive ? 'Grupo Ativo' : 'Grupo Inativo'}
+                  <span className="mx-1">•</span>
+                  {group.participants.length} participantes
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Card de instruções adicionais */}
-        <div className="mt-6 bg-white rounded-xl shadow-sm border p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Precisa de ajuda?</h3>
-          <p className="text-sm text-gray-600">
-            Se você tiver problemas para escanear o QR Code ou acessar o WhatsApp, 
-            entre em contato com o administrador do grupo ou use o botão "Abrir WhatsApp" 
-            diretamente.
-          </p>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="absolute bottom-0 w-full py-6 text-center text-slate-400 text-sm">
+        © 2026 ExplicaAI Inc.
+      </footer>
     </div>
   );
 };
