@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API</title>
+</head>
+<body>
+    <h1>Test API Communication</h1>
+    <button onclick="testAPI()">Test Analytics API</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Loading...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/campaigns/6973f0d16f4cbbdc19c3af96/analytics');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h3>Success!</h3>
+                    <p><strong>Total Students:</strong> ${data.overview.totalStudents}</p>
+                    <p><strong>Average Score:</strong> ${data.overview.averageScore}%</p>
+                    <p><strong>Completion Rate:</strong> ${data.overview.completionRate}%</p>
+                    <p><strong>Response Time:</strong> ${data.overview.averageResponseTime}</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

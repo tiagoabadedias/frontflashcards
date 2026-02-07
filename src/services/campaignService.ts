@@ -1,0 +1,157 @@
+import { api } from './api';
+import { 
+  Campaign, 
+  CreateCampaignData, 
+  Question,
+  CreateQuestionForCampaignData,
+  UpdateQuestionForCampaignData,
+  GenerateQuestionsData 
+} from '../types';
+
+export const campaignService = {
+  // Listar todas as campanhas
+  async getAll(params?: { name?: string; active?: string }) {
+    const response = await api.get<Campaign[]>('/campaigns', { params });
+    return response.data;
+  },
+
+  // Obter campanha por ID
+  async getById(id: string) {
+    const response = await api.get<Campaign>(`/campaigns/${id}`);
+    return response.data;
+  },
+
+  // Criar nova campanha
+  async create(data: CreateCampaignData) {
+    const response = await api.post<Campaign>('/campaigns', data);
+    return response.data;
+  },
+
+  // Atualizar campanha
+  async update(id: string, data: Partial<CreateCampaignData>) {
+    const response = await api.patch<Campaign>(`/campaigns/${id}`, data);
+    return response.data;
+  },
+
+  // Ativar campanha
+  async activate(id: string) {
+    const response = await api.patch<Campaign>(`/campaigns/${id}/activate`);
+    return response.data;
+  },
+
+  // Desativar campanha
+  async deactivate(id: string) {
+    const response = await api.patch<Campaign>(`/campaigns/${id}/deactivate`);
+    return response.data;
+  },
+
+  // Deletar campanha
+  async delete(id: string) {
+    await api.delete(`/campaigns/${id}`);
+  },
+
+  // Buscar campanhas ativas
+  async getActive() {
+    return this.getAll({ active: 'true' });
+  },
+
+  // Buscar por nome
+  async getByName(name: string) {
+    return this.getAll({ name });
+  },
+
+  // Iniciar campanha (chamar webhook)
+  async startCampaign(campaignData: {
+    campaign: string;
+    question: string;
+    quantity: number;
+    phoneNumbers: string[];
+    questions?: Question[];
+  }) {
+    const webhookUrl = 'https://n8n.srv1008656.hstgr.cloud/webhook/775331c8-aeb6-482e-bb2c-e84db7166279';
+    
+    try {
+      // Se não foram passadas questões, buscar as questões da campanha
+      let questions = campaignData.questions;
+      if (!questions) {
+        try {
+          questions = await this.getCampaignQuestions(campaignData.campaign);
+        } catch (error) {
+          console.warn('Erro ao buscar questões da campanha:', error);
+          questions = [];
+        }
+      }
+
+      // Obter ID do usuário logado
+      let userId = '';
+      try {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          userId = user.id;
+        }
+      } catch (e) {
+        console.warn('Não foi possível obter o ID do usuário:', e);
+      }
+
+      // Dados finais a serem enviados
+      const dataToSend = {
+        ...campaignData,
+        questions: questions,
+        userId // Adiciona o userId ao payload
+      };
+      
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([dataToSend]),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Erro ao iniciar campanha:', error);
+      throw error;
+    }
+  },
+
+  // =============== MÉTODOS PARA QUESTÕES ===============
+
+  // Buscar questões da campanha
+  async getCampaignQuestions(campaignId: string) {
+    const response = await api.get<Question[]>(`/campaigns/${campaignId}/questions`);
+    return response.data;
+  },
+
+  // Criar questão para a campanha
+  async createCampaignQuestion(campaignId: string, data: CreateQuestionForCampaignData) {
+    const response = await api.post<Question>(`/campaigns/${campaignId}/questions`, data);
+    return response.data;
+  },
+
+  // Atualizar questão da campanha
+  async updateCampaignQuestion(campaignId: string, questionId: string, data: UpdateQuestionForCampaignData) {
+    const response = await api.patch<Question>(`/campaigns/${campaignId}/questions/${questionId}`, data);
+    return response.data;
+  },
+
+  // Deletar questão da campanha
+  async deleteCampaignQuestion(campaignId: string, questionId: string) {
+    await api.delete(`/campaigns/${campaignId}/questions/${questionId}`);
+  },
+
+  // Gerar questões automaticamente (placeholder para futura implementação)
+  async generateCampaignQuestions(campaignId: string, data: GenerateQuestionsData) {
+    // Por enquanto, retorna erro informativo
+    throw new Error('Funcionalidade de geração automática será implementada em breve');
+    
+    // Quando implementado:
+    // const response = await api.post<Question[]>(`/campaigns/${campaignId}/questions/generate`, data);
+    // return response.data;
+  }
+};
