@@ -51,7 +51,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginWithGoogle = () => {
     // Redireciona para o backend
-    window.location.href = 'http://localhost:3001/api/v1/auth/google';
+    // @ts-ignore
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://flashcards-sooty-ten.vercel.app/api/v1';
+    window.location.href = `${apiUrl}/auth/google`;
   };
 
   const logout = () => {
