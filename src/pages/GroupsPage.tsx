@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { 
   Users, 
   Plus, 
@@ -7,8 +6,6 @@ import {
   Filter, 
   Edit3, 
   Trash2, 
-  UserPlus, 
-  Phone,
   Eye,
   EyeOff,
   QrCode,
@@ -18,9 +15,7 @@ import {
   ArrowUp,
   ArrowDown,
   CheckSquare,
-  Square,
-  Grid3X3,
-  List
+  Square
 } from 'lucide-react';
 import { useGroups, useDeleteGroup, useToggleGroupStatus } from '../hooks/useGroups';
 import { Group } from '../types';
@@ -31,7 +26,6 @@ type SortField = 'name' | 'participants' | 'isActive' | 'lastActivity';
 type SortDirection = 'asc' | 'desc';
 
 export const GroupsPage = () => {
-  const navigate = useNavigate();
   
   // Estados existentes
   const [searchTerm, setSearchTerm] = useState('');
@@ -106,17 +100,6 @@ export const GroupsPage = () => {
   }, [filteredAndSortedGroups, currentPage, itemsPerPage]);
 
   const totalPages = Math.ceil(filteredAndSortedGroups.length / itemsPerPage);
-
-  const filteredGroups = groups.filter(group => {
-    const matchesSearch = group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         group.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = statusFilter === '' ||
-                         (statusFilter === 'active' && group.isActive) ||
-                         (statusFilter === 'inactive' && !group.isActive);
-
-    return matchesSearch && matchesStatus;
-  });
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {

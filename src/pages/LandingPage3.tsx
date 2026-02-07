@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, MessageSquare, Zap, ArrowRight, PlayCircle, Check, Star, Users, BrainCircuit } from 'lucide-react';
+import { Mic, MessageSquare, Zap, ArrowRight, PlayCircle, Check, Star, BrainCircuit } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export const LandingPage3: React.FC = () => {

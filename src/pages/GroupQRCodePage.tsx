@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { QrCode, Users, ExternalLink } from 'lucide-react';
 import { useGroups } from '../hooks/useGroups';

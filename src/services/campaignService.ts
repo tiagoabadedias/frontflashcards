@@ -146,7 +146,7 @@ export const campaignService = {
   },
 
   // Gerar questões automaticamente (placeholder para futura implementação)
-  async generateCampaignQuestions(campaignId: string, data: GenerateQuestionsData) {
+  async generateCampaignQuestions(_campaignId: string, _data: GenerateQuestionsData) {
     // Por enquanto, retorna erro informativo
     throw new Error('Funcionalidade de geração automática será implementada em breve');
     

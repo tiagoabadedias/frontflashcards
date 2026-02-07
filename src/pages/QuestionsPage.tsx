@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuestions } from '../hooks/useQuestions';
 import { QuestionFilters } from '../components/QuestionFilters';
-import { QuestionCard } from '../components/QuestionCard';
 import { QuestionDetailsModal } from '../components/QuestionDetailsModal';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';

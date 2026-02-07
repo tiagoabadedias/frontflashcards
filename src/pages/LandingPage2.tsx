@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Play, MessageCircle, BarChart3, Check, ArrowRight, Zap, Star } from 'lucide-react';
+import { Mic, Play, MessageCircle, ArrowRight, Zap, Star } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export const LandingPage2: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-lime-300 selection:text-black">
@@ -205,8 +204,6 @@ export const LandingPage2: React.FC = () => {
             ].map((item, index) => (
               <div 
                 key={index}
-                onMouseEnter={() => setHoveredCard(index)}
-                onMouseLeave={() => setHoveredCard(null)}
                 className="bg-white border-4 border-black rounded-3xl p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
               >
                 <div className={`w-16 h-16 ${item.color} border-4 border-black rounded-2xl flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
