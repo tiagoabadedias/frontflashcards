@@ -33,7 +33,7 @@ export const GroupQRCodePage = () => {
     );
   }
 
-  const whatsappText = `Quero%20me%20inscrever%20no%20grupo%20FlashCards%20${group._id}`;
+  const whatsappText = `Quero%20me%20inscrever%20no%20grupo%20${group.name}%20${group._id}`;
   const whatsappUrl = `https://wa.me/555121654734?text=${whatsappText}`;
   const qrCodeUrl = `https://api-qrcode-three.vercel.app/qrcode?text=${encodeURIComponent(whatsappUrl)}`;
 
