@@ -11,6 +11,9 @@ import { GroupQRCodePage } from './pages/GroupQRCodePage';
 import { CampaignAnalyticsPage } from './pages/CampaignAnalyticsPage';
 import { LoginPage } from './pages/LoginPage';
 import { AuthCallbackPage } from './pages/AuthCallbackPage';
+import { LandingPage } from './pages/LandingPage';
+import { LandingPage2 } from './pages/LandingPage2';
+import { LandingPage3 } from './pages/LandingPage3';
 import { AuthProvider } from './contexts/AuthContext';
 import { PrivateRoute } from './components/PrivateRoute';
 
@@ -35,10 +38,14 @@ function App() {
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             
             {/* Rotas Públicas */}
+            <Route path="/" element={<LandingPage3 />} />
+            <Route path="/v1" element={<LandingPage />} />
+            <Route path="/v2" element={<LandingPage2 />} />
+            <Route path="/v3" element={<LandingPage3 />} />
             <Route path="/groups/:id/qrcode" element={<GroupQRCodePage />} />
             
             {/* Rotas Protegidas */}
-            <Route path="/" element={
+            <Route path="/dashboard" element={
               <PrivateRoute>
                 <Layout>
                   <Dashboard />
