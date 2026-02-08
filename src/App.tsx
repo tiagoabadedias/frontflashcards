@@ -16,6 +16,8 @@ import { LandingPage3 } from './pages/LandingPage3';
 import { AuthProvider } from './contexts/AuthContext';
 import { PrivateRoute } from './components/PrivateRoute';
 
+import { CampaignQRCodePage } from './pages/CampaignQRCodePage';
+
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +44,7 @@ function App() {
             <Route path="/v2" element={<LandingPage2 />} />
             <Route path="/v3" element={<LandingPage3 />} />
             <Route path="/groups/:id/qrcode" element={<GroupQRCodePage />} />
+            <Route path="/campaigns/:id/qrcode" element={<CampaignQRCodePage />} />
             
             {/* Rotas Protegidas */}
             <Route path="/dashboard" element={

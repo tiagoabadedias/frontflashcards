@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
 import { CreateCampaignData, Campaign } from '../types';
 import { EditCampaignModal } from '../components/EditCampaignModal';
-import { Plus, Edit, Trash2, Power, Users, Play, BarChart3, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Power, Users, Play, BarChart3, Search, QrCode } from 'lucide-react';
 import { format } from 'date-fns';
 
 export const CampaignsPage = () => {
@@ -393,6 +393,14 @@ export const CampaignsPage = () => {
                           title="Analytics"
                         >
                           <BarChart3 className="w-4 h-4" />
+                        </button>
+
+                        <button
+                          onClick={() => window.open(`/campaigns/${campaign._id}/qrcode`, '_blank')}
+                          className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                          title="QR Code de Inscrição"
+                        >
+                          <QrCode className="w-4 h-4" />
                         </button>
 
                         <button
