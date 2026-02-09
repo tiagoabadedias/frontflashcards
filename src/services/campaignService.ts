@@ -60,7 +60,7 @@ export const campaignService = {
     return this.getAll({ name });
   },
 
-  // Iniciar campanha (chamar webhook)
+  // Iniciar campanha (chamar webhook e marcar como iniciada)
   async startCampaign(campaignData: {
     campaign: string;
     question: string;
@@ -71,6 +71,10 @@ export const campaignService = {
     const webhookUrl = 'https://n8n.srv1008656.hstgr.cloud/webhook/775331c8-aeb6-482e-bb2c-e84db7166279';
     
     try {
+      // 1. Marcar campanha como iniciada no backend
+      await api.patch(`/campaigns/${campaignData.campaign}/start`);
+
+      // 2. Continuar com o disparo do webhook
       // Se não foram passadas questões, buscar as questões da campanha
       let questions = campaignData.questions;
       if (!questions) {

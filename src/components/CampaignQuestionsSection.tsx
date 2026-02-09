@@ -124,7 +124,7 @@ export const CampaignQuestionsSection: React.FC<CampaignQuestionsSectionProps> =
                   </div>
                   <h3 className="mt-2 text-sm font-medium text-gray-900">Nenhuma questão</h3>
                   <p className="mt-1 text-sm text-gray-500">
-                    Comece criando a primeira questão para esta campanha.
+                    Comece criando a primeira questão para esta trilha.
                   </p>
                   <div className="mt-6">
                     <button
@@ -208,7 +208,7 @@ export const CampaignQuestionsSection: React.FC<CampaignQuestionsSectionProps> =
                   ➕ Criar Nova Questão
                 </h3>
                 <p className="text-blue-700 text-sm">
-                  Adicione uma nova questão à campanha "{campaign.name}"
+                  Adicione uma nova questão à trilha "{campaign.name}"
                 </p>
               </div>
 

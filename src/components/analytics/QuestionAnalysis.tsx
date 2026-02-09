@@ -158,12 +158,12 @@ export const QuestionAnalysisSection: React.FC<QuestionAnalysisProps> = ({
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
       <h3 className="text-lg font-semibold mb-4 flex items-center">
         <span className="text-2xl mr-2">📋</span>
-        QUESTÕES DA CAMPANHA
+        QUESTÕES DA TRILHA
       </h3>
       
       {campaignQuestions.length === 0 ? (
         <div className="text-gray-500 text-center py-8">
-          Nenhuma questão cadastrada na campanha
+          Nenhuma questão cadastrada na trilha
         </div>
       ) : (
         <div className="overflow-x-auto">

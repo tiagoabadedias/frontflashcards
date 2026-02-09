@@ -21,8 +21,8 @@ export const CampaignQRCodePage = () => {
           <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <QrCode className="h-8 w-8 text-slate-400" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Campanha não encontrada</h2>
-          <p className="text-slate-600 mb-8">A campanha que você está procurando não existe ou foi removida.</p>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Trilha não encontrada</h2>
+          <p className="text-slate-600 mb-8">A trilha que você está procurando não existe ou foi removida.</p>
           <Link to="/" className="px-6 py-3 bg-indigo-600 text-white rounded-full font-medium hover:bg-indigo-700 transition-colors">
             Voltar para o início
           </Link>
@@ -141,7 +141,7 @@ export const CampaignQRCodePage = () => {
 
                 <div className="flex items-center justify-center gap-2 text-sm text-slate-500 bg-slate-50 py-2 px-4 rounded-full mx-auto w-fit">
                   <span className={`w-2 h-2 rounded-full ${campaign.isActive ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                  {campaign.isActive ? 'Campanha Ativa' : 'Campanha Inativa'}
+                  {campaign.isActive ? 'Trilha Ativa' : 'Trilha Inativa'}
                 </div>
               </div>
             </div>

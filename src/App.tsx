@@ -14,6 +14,7 @@ import { AuthCallbackPage } from './pages/AuthCallbackPage';
 import { LandingPage } from './pages/LandingPage';
 import { LandingPage2 } from './pages/LandingPage2';
 import { LandingPage3 } from './pages/LandingPage3';
+import { BusinessLogicPage } from './pages/BusinessLogicPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { PrivateRoute } from './components/PrivateRoute';
 
@@ -40,6 +41,7 @@ function App() {
             
             {/* Rotas Públicas */}
             <Route path="/" element={<LandingPage3 />} />
+            <Route path="/como-funciona" element={<BusinessLogicPage />} />
             <Route path="/v1" element={<LandingPage />} />
             <Route path="/v2" element={<LandingPage2 />} />
             <Route path="/v3" element={<LandingPage3 />} />

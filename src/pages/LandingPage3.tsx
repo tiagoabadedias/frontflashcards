@@ -28,7 +28,7 @@ export const LandingPage3: React.FC = () => {
             <div className="flex items-center gap-8 text-sm font-medium">
               <div className="hidden md:flex gap-8">
                 <a href="#features" className="text-slate-600 hover:text-indigo-600 transition-colors">Funcionalidades</a>
-                <a href="#how-it-works" className="text-slate-600 hover:text-indigo-600 transition-colors">Como Funciona</a>
+                <Link to="/como-funciona" className="text-slate-600 hover:text-indigo-600 transition-colors">Como Funciona</Link>
               </div>
               {isAuthenticated ? (
                 <Link to="/dashboard" className="px-6 py-2.5 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 font-semibold transform hover:-translate-y-0.5">
@@ -36,7 +36,7 @@ export const LandingPage3: React.FC = () => {
                 </Link>
               ) : (
                 <Link to="/login" className="px-6 py-2.5 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 font-semibold transform hover:-translate-y-0.5">
-                  Começar Grátis
+                  Começar Agora
                 </Link>
               )}
             </div>
@@ -61,8 +61,8 @@ export const LandingPage3: React.FC = () => {
             </div>
             
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1] mb-8 text-slate-900">
-              Avaliação que <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600">se escuta.</span>
+              Educação    <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600">que escuta.</span>
             </h1>
             
             <p className="text-xl text-slate-600 leading-relaxed max-w-xl mb-10 font-medium">
@@ -80,9 +80,6 @@ export const LandingPage3: React.FC = () => {
                   Começar Agora <ArrowRight className="w-5 h-5" />
                 </Link>
               )}
-              <button className="px-8 py-4 bg-white border-2 border-slate-200 text-slate-700 rounded-full font-bold text-lg hover:border-slate-900 hover:text-slate-900 transition-all flex items-center justify-center gap-2">
-                <PlayCircle className="w-5 h-5" /> Ver Demo
-              </button>
             </div>
 
             <div className="mt-12 flex items-center gap-4 text-sm font-medium text-slate-500">
@@ -276,11 +273,11 @@ export const LandingPage3: React.FC = () => {
                </Link>
              ) : (
                <Link to="/login" className="px-10 py-5 bg-indigo-600 text-white rounded-full font-bold text-xl hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-200 hover:-translate-y-1">
-                 Começar Gratuitamente
+                 Começar Agora
                </Link>
              )}
           </div>
-          <p className="mt-8 text-slate-400 font-medium text-sm">Sem cartão de crédito necessário • Cancele a qualquer momento</p>
+          <p className="mt-6 text-gray-400 text-sm">Sem cartão de crédito necessário • Cancele a qualquer momento</p>
         </div>
       </section>
 
@@ -295,8 +292,6 @@ export const LandingPage3: React.FC = () => {
             
             <div className="flex gap-8 text-slate-500 font-medium">
                <a href="#" className="hover:text-indigo-600 transition-colors">Sobre</a>
-               <a href="#" className="hover:text-indigo-600 transition-colors">Privacidade</a>
-               <a href="#" className="hover:text-indigo-600 transition-colors">Termos</a>
             </div>
 
             <div className="text-sm text-slate-400 font-medium">

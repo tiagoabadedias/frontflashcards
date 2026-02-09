@@ -231,7 +231,7 @@ export const LandingPage2: React.FC = () => {
               </h2>
               <div className="space-y-8">
                 {[
-                  { step: "1", title: "Crie a Campanha", desc: "Defina a pergunta e os critérios de correção." },
+                  { step: "1", title: "Crie a Trilha", desc: "Defina a pergunta e os critérios de correção." },
                   { step: "2", title: "Envie no Grupo", desc: "Mande o link no WhatsApp da turma." },
                   { step: "3", title: "Relaxe", desc: "Receba as respostas corrigidas e tabuladas." }
                 ].map((item, i) => (

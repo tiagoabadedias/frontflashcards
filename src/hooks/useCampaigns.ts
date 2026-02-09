@@ -25,10 +25,10 @@ export const useCreateCampaign = () => {
     mutationFn: (data: CreateCampaignData) => campaignService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns'] });
-      toast.success('Campanha criada com sucesso!');
+      toast.success('Trilha criada com sucesso!');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erro ao criar campanha');
+      toast.error(error.response?.data?.message || 'Erro ao criar trilha');
     },
   });
 };
@@ -40,10 +40,10 @@ export const useDeleteCampaign = () => {
     mutationFn: (id: string) => campaignService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns'] });
-      toast.success('Campanha deletada com sucesso!');
+      toast.success('Trilha deletada com sucesso!');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erro ao deletar campanha');
+      toast.error(error.response?.data?.message || 'Erro ao deletar trilha');
     },
   });
 };
@@ -57,10 +57,10 @@ export const useUpdateCampaign = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns'] });
       queryClient.invalidateQueries({ queryKey: ['campaign'] });
-      toast.success('Campanha atualizada com sucesso!');
+      toast.success('Trilha atualizada com sucesso!');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erro ao atualizar campanha');
+      toast.error(error.response?.data?.message || 'Erro ao atualizar trilha');
     },
   });
 };
@@ -73,10 +73,10 @@ export const useToggleCampaignStatus = () => {
       isActive ? campaignService.deactivate(id) : campaignService.activate(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns'] });
-      toast.success('Status da campanha alterado com sucesso!');
+      toast.success('Status da trilha alterado com sucesso!');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erro ao alterar status da campanha');
+      toast.error(error.response?.data?.message || 'Erro ao alterar status da trilha');
     },
   });
 };
@@ -91,10 +91,10 @@ export const useStartCampaign = () => {
       questions?: any[];
     }) => campaignService.startCampaign(campaignData),
     onSuccess: () => {
-      toast.success('Campanha iniciada com sucesso!');
+      toast.success('Trilha iniciada com sucesso!');
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Erro ao iniciar campanha');
+      toast.error(error?.message || 'Erro ao iniciar trilha');
     },
   });
 };

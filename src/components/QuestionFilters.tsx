@@ -45,17 +45,17 @@ export const QuestionFilters: React.FC<QuestionFiltersProps> = ({
       <h3 className="text-lg font-semibold text-gray-900">Filtros</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Filtro por campanha */}
+        {/* Filtro por trilha */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Campanha
+            Trilha
           </label>
           <select
             value={localFilters.campaignId || ''}
             onChange={(e) => handleSelectChange('campaignId', e.target.value || undefined)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">Todas as campanhas</option>
+            <option value="">Todas as trilhas</option>
             {campaigns.map((campaign) => (
               <option key={campaign._id} value={campaign._id}>
                 {campaign.name}

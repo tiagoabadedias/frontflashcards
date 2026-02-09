@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 export const CampaignsPage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
+  const [confirmStartCampaign, setConfirmStartCampaign] = useState<Campaign | null>(null); // Estado para o modal de confirmação
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ export const CampaignsPage = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Tem certeza que deseja deletar esta campanha?')) {
+    if (window.confirm('Tem certeza que deseja deletar esta trilha?')) {
       try {
         await deleteCampaignMutation.mutateAsync(id);
       } catch (error) {
@@ -85,13 +86,25 @@ export const CampaignsPage = () => {
   };
 
   const handleStartCampaign = async (campaign: Campaign) => {
+    // Abre o modal de confirmação em vez de iniciar imediatamente
+    setConfirmStartCampaign(campaign);
+  };
+
+  const confirmStart = async () => {
+    if (!confirmStartCampaign) return;
+    const campaign = confirmStartCampaign;
+
     if (!campaign._id || !campaign.groups || campaign.groups.length === 0) {
-      alert('Campanha deve ter grupos vinculados para ser iniciada.');
+      alert('Trilha deve ter grupos vinculados para ser iniciada.');
+      setConfirmStartCampaign(null);
       return;
     }
+    
+    // ... restante da validação ...
 
     if (!allGroups) {
       alert('Carregando dados dos grupos. Tente novamente em alguns segundos.');
+      setConfirmStartCampaign(null);
       return;
     }
 
@@ -109,7 +122,8 @@ export const CampaignsPage = () => {
     });
 
     if (phoneNumbers.length === 0) {
-      alert('Nenhum participante encontrado nos grupos da campanha.');
+      alert('Nenhum participante encontrado nos grupos da trilha.');
+      setConfirmStartCampaign(null);
       return;
     }
 
@@ -123,6 +137,8 @@ export const CampaignsPage = () => {
         phoneNumbers: phoneNumbers,
         questions: campaignQuestions
       });
+      
+      setConfirmStartCampaign(null); // Fecha o modal
     } catch (error) {
       // Error is handled by the mutation
     }
@@ -140,8 +156,8 @@ export const CampaignsPage = () => {
     return (
       <Alert
         type="error"
-        title="Erro ao carregar campanhas"
-        message="Não foi possível carregar as campanhas. Tente novamente."
+        title="Erro ao carregar trilhas"
+        message="Não foi possível carregar as trilhas. Tente novamente."
       />
     );
   }
@@ -151,9 +167,9 @@ export const CampaignsPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Campanhas</h1>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Trilhas</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Gerencie suas campanhas de envio de flashcards
+            Gerencie suas trilhas de envio de flashcards
           </p>
         </div>
         <button
@@ -161,18 +177,18 @@ export const CampaignsPage = () => {
           className="btn btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/30"
         >
           <Plus className="w-4 h-4" />
-          Nova Campanha
+          Nova Trilha
         </button>
       </div>
 
       {/* Create Campaign Form */}
       {showCreateForm && (
         <div className="card p-6 animate-fade-in">
-          <h3 className="text-lg font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Nova Campanha</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Nova Trilha</h3>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="label">Nome da Campanha *</label>
+                <label className="label">Nome da Trilha *</label>
                 <input
                   {...register('name', { required: 'Nome é obrigatório' })}
                   type="text"
@@ -247,7 +263,7 @@ export const CampaignsPage = () => {
                 disabled={createCampaignMutation.isPending}
                 className="btn btn-primary min-w-[120px]"
               >
-                {createCampaignMutation.isPending ? <LoadingSpinner size="sm" /> : 'Criar Campanha'}
+                {createCampaignMutation.isPending ? <LoadingSpinner size="sm" /> : 'Criar Trilha'}
               </button>
             </div>
           </form>
@@ -297,7 +313,7 @@ export const CampaignsPage = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Campanha
+                  Trilha
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -376,7 +392,7 @@ export const CampaignsPage = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-2">
-                        {campaign.isActive && campaign.groups && campaign.groups.length > 0 && (
+                        {campaign.isActive && campaign.groups && campaign.groups.length > 0 && !campaign.hasStarted && (
                           <button
                             onClick={() => handleStartCampaign(campaign)}
                             disabled={startCampaignMutation.isPending}
@@ -395,13 +411,16 @@ export const CampaignsPage = () => {
                           <BarChart3 className="w-4 h-4" />
                         </button>
 
-                        <button
-                          onClick={() => window.open(`/campaigns/${campaign._id}/qrcode`, '_blank')}
-                          className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                          title="QR Code de Inscrição"
-                        >
-                          <QrCode className="w-4 h-4" />
-                        </button>
+                        {/* QR Code visível apenas se a trilha já foi iniciada */}
+                        {campaign.hasStarted && (
+                          <button
+                            onClick={() => window.open(`/campaigns/${campaign._id}/qrcode`, '_blank')}
+                            className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                            title="QR Code de Inscrição"
+                          >
+                            <QrCode className="w-4 h-4" />
+                          </button>
+                        )}
 
                         <button
                           onClick={() => setEditingCampaign(campaign)}
@@ -448,6 +467,34 @@ export const CampaignsPage = () => {
           campaign={editingCampaign}
           onClose={() => setEditingCampaign(null)}
         />
+      )}
+
+      {/* Confirmation Modal */}
+      {confirmStartCampaign && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Iniciar Trilha?</h3>
+            <p className="text-gray-600 mb-6">
+              Você tem certeza que deseja iniciar a trilha <strong>{confirmStartCampaign.name}</strong>?
+              <br /><br />
+              <span className="text-red-600 font-medium">Atenção:</span> Após confirmar, o disparo será iniciado e você não poderá executar esta ação novamente para esta trilha nesta sessão.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setConfirmStartCampaign(null)}
+                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmStart}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+              >
+                Confirmar e Iniciar
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

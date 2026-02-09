@@ -52,7 +52,7 @@ export const CampaignPerformanceChart: React.FC = () => {
             onChange={(e) => setSelectedCampaignId(e.target.value)}
             className="input py-2 text-sm w-full sm:w-64"
           >
-            <option value="">Todas as Campanhas (Top 5)</option>
+            <option value="">Todas as Trilhas (Top 5)</option>
             {campaigns?.map((campaign) => (
               <option key={campaign._id} value={campaign._id}>
                 {campaign.name}

@@ -62,7 +62,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
       <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex">
         {/* Sidebar com navegação */}
         <div className="w-1/4 bg-gray-50 p-4 rounded-l-lg border-r">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Editar Campanha</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Editar Trilha</h2>
           <nav className="space-y-2">
             <button
               onClick={() => setActiveSection('basic')}
@@ -203,14 +203,14 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Nome da Campanha *
+          Nome da Trilha *
         </label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => setFormData((prev: any) => ({ ...prev, name: e.target.value }))}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Digite o nome da campanha"
+          placeholder="Digite o nome da trilha"
           required
         />
       </div>
@@ -252,7 +252,7 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
           className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
         />
         <label htmlFor="isActive" className="ml-2 block text-sm text-gray-700">
-          Campanha ativa
+          Trilha ativa
         </label>
       </div>
 

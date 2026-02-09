@@ -44,7 +44,7 @@ export const Dashboard = () => {
       bgColor: 'bg-blue-50',
     },
     {
-      name: 'Campanhas Ativas',
+      name: 'Trilhas Ativas',
       value: stats?.activeCampaigns || 0,
       icon: CheckCircle,
       color: 'text-emerald-600',
@@ -78,7 +78,7 @@ export const Dashboard = () => {
         <div className="mt-4 sm:mt-0">
           <Link to="/campaigns" className="btn btn-primary shadow-lg shadow-primary-500/30 flex items-center gap-2">
             <Target className="w-4 h-4" />
-            Nova Campanha
+            Nova Trilha
           </Link>
         </div>
       </div>
@@ -115,7 +115,7 @@ export const Dashboard = () => {
 
          <div className="card p-6 flex items-center justify-between border-primary-100 bg-primary-50/50">
             <div>
-               <p className="text-primary-800 text-sm font-medium mb-1">Total de Campanhas Criadas</p>
+               <p className="text-primary-800 text-sm font-medium mb-1">Total de Trilhas Criadas</p>
                <h3 className="text-3xl font-bold text-primary-900">{stats?.totalCampaigns || 0}</h3>
                <p className="text-xs text-primary-600 mt-2">Desde o início do uso</p>
             </div>
@@ -133,7 +133,7 @@ export const Dashboard = () => {
         {/* Recent Campaigns */}
         <div className="card lg:col-span-2 flex flex-col">
           <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-            <h3 className="text-lg font-bold text-gray-900">Campanhas Recentes</h3>
+            <h3 className="text-lg font-bold text-gray-900">Trilhas Recentes</h3>
             <Link to="/campaigns" className="text-sm font-medium text-primary-600 hover:text-primary-700">
               Ver todas
             </Link>
@@ -165,7 +165,7 @@ export const Dashboard = () => {
                 </div>
              ) : (
                 <div className="p-8 text-center text-gray-500">
-                   Nenhuma campanha encontrada.
+                   Nenhuma trilha encontrada.
                 </div>
              )}
           </div>

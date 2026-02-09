@@ -40,7 +40,7 @@ export const CampaignAnalyticsPage: React.FC = () => {
       <Alert
         type="warning"
         title="Nenhum dado encontrado"
-        message="Não foi possível carregar os dados analíticos desta campanha."
+        message="Não foi possível carregar os dados analíticos desta trilha."
       />
     );
   }
@@ -55,7 +55,7 @@ export const CampaignAnalyticsPage: React.FC = () => {
           Dashboard Analítico
         </h1>
         <p className="mt-2 text-gray-500 max-w-2xl">
-          Análise de performance para a campanha <span className="font-semibold text-gray-900">{analytics.campaignDetails?.name}</span>
+          Análise de performance para a trilha <span className="font-semibold text-gray-900">{analytics.campaignDetails?.name}</span>
         </p>
       </div>
       

@@ -3,6 +3,7 @@ export interface Campaign {
   name: string;
   description?: string;
   isActive?: boolean;
+  hasStarted?: boolean;
   startDate?: string;
   endDate?: string;
   groups?: (Group | string)[]; // Aceita tanto objetos quanto IDs
