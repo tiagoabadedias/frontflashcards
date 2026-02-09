@@ -7,6 +7,7 @@ import { CampaignsPage } from './pages/CampaignsPage';
 import { QuestionsPage } from './pages/QuestionsPage';
 import { GroupsPage } from './pages/GroupsPage';
 import { GroupQRCodePage } from './pages/GroupQRCodePage';
+import { CampaignQRCodePage } from './pages/CampaignQRCodePage';
 import { CampaignAnalyticsPage } from './pages/CampaignAnalyticsPage';
 import { LoginPage } from './pages/LoginPage';
 import { AuthCallbackPage } from './pages/AuthCallbackPage';
@@ -16,7 +17,6 @@ import { LandingPage3 } from './pages/LandingPage3';
 import { AuthProvider } from './contexts/AuthContext';
 import { PrivateRoute } from './components/PrivateRoute';
 
-import { CampaignQRCodePage } from './pages/CampaignQRCodePage';
 
 // Create a client
 const queryClient = new QueryClient({
