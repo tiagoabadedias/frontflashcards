@@ -31,8 +31,9 @@ export const CampaignQRCodePage = () => {
     );
   }
 
-  const whatsappText = `Quero%20me%20inscrever%20na%20campanha%20${campaign.name}%20${campaign._id}`;
-  const whatsappUrl = `https://wa.me/555121654734?text=${whatsappText}`;
+  const text = `Quero me inscrever na campanha ${campaign.name} ${campaign._id}`;
+  const encodedText = encodeURIComponent(text);
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=555121654734&text=${encodedText}`;
   const qrCodeUrl = `https://api-qrcode-three.vercel.app/qrcode?text=${encodeURIComponent(whatsappUrl)}`;
 
   const handleWhatsAppClick = () => {

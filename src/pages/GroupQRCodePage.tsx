@@ -33,8 +33,10 @@ export const GroupQRCodePage = () => {
     );
   }
 
-  const whatsappText = `Quero%20me%20inscrever%20no%20grupo%20${group.name}%20${group._id}`;
-  const whatsappUrl = `https://wa.me/555121654734?text=${whatsappText}`;
+  const text = `Quero me inscrever no grupo ${group.name} ${group._id}`;
+  const encodedText = encodeURIComponent(text);
+  // Usando api.whatsapp.com para maior compatibilidade
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=555121654734&text=${encodedText}`;
   const qrCodeUrl = `https://api-qrcode-three.vercel.app/qrcode?text=${encodeURIComponent(whatsappUrl)}`;
 
   const handleWhatsAppClick = () => {
