@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, MessageSquare, Mic, Zap, Users, BarChart3, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MessageSquare, Zap, Users, BarChart3, CheckCircle } from 'lucide-react';
 
 export const BusinessLogicPage: React.FC = () => {
   return (
@@ -16,9 +16,9 @@ export const BusinessLogicPage: React.FC = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md">E</div>
             <span className="text-lg font-bold tracking-tight text-slate-900">ExplicaAI</span>
           </div>
-          <Link to="/login" className="px-5 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all shadow-md font-semibold text-sm">
+          <button disabled className="px-5 py-2 bg-indigo-600 text-white rounded-full opacity-50 cursor-not-allowed shadow-md font-semibold text-sm">
             Começar Agora
-          </Link>
+          </button>
         </div>
       </nav>
 
@@ -130,10 +130,10 @@ export const BusinessLogicPage: React.FC = () => {
             <p className="text-slate-600 mb-8 max-w-lg mx-auto">
               Junte-se a centenas de professores que já estão usando o ExplicaAI.
             </p>
-            <Link to="/login" className="inline-flex items-center justify-center px-8 py-4 bg-indigo-600 text-white rounded-full font-bold text-lg hover:bg-indigo-700 transition-all shadow-xl hover:-translate-y-1">
+            <button disabled className="inline-flex items-center justify-center px-8 py-4 bg-indigo-600 text-white rounded-full font-bold text-lg opacity-50 cursor-not-allowed shadow-xl">
               Começar Agora
               <CheckCircle className="w-5 h-5 ml-2" />
-            </Link>
+            </button>
           </div>
         </div>
       </main>

@@ -35,9 +35,9 @@ export const LandingPage3: React.FC = () => {
                   Dashboard
                 </Link>
               ) : (
-                <Link to="/login" className="px-6 py-2.5 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 font-semibold transform hover:-translate-y-0.5">
+                <button disabled className="px-6 py-2.5 bg-indigo-600 text-white rounded-full opacity-50 cursor-not-allowed shadow-lg shadow-indigo-200 font-semibold">
                   Começar Agora
-                </Link>
+                </button>
               )}
             </div>
           </div>
@@ -76,9 +76,9 @@ export const LandingPage3: React.FC = () => {
                   Ir para o App <ArrowRight className="w-5 h-5" />
                 </Link>
               ) : (
-                <Link to="/login" className="px-8 py-4 bg-slate-900 text-white rounded-full font-bold text-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                <button disabled className="px-8 py-4 bg-slate-900 text-white rounded-full font-bold text-lg opacity-50 cursor-not-allowed flex items-center justify-center gap-2 shadow-xl">
                   Começar Agora <ArrowRight className="w-5 h-5" />
-                </Link>
+                </button>
               )}
             </div>
 
@@ -272,9 +272,9 @@ export const LandingPage3: React.FC = () => {
                  Acessar meu Painel
                </Link>
              ) : (
-               <Link to="/login" className="px-10 py-5 bg-indigo-600 text-white rounded-full font-bold text-xl hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-200 hover:-translate-y-1">
+               <button disabled className="px-10 py-5 bg-indigo-600 text-white rounded-full font-bold text-xl opacity-50 cursor-not-allowed shadow-xl shadow-indigo-200">
                  Começar Agora
-               </Link>
+               </button>
              )}
           </div>
           <p className="mt-6 text-gray-400 text-sm">Sem cartão de crédito necessário • Cancele a qualquer momento</p>
