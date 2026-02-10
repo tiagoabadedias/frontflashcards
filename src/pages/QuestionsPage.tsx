@@ -76,8 +76,8 @@ export const QuestionsPage = () => {
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden w-full">
-            <div className="overflow-x-auto w-full">
+          <div className="card overflow-hidden">
+            <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -104,7 +104,7 @@ export const QuestionsPage = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {questions.map((question) => (
                     <tr key={question._id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4">
                         <div className="text-sm font-medium text-gray-900">
                           {question.campaign && typeof question.campaign === 'object' ? question.campaign.name : 'N/A'}
                         </div>
@@ -112,7 +112,7 @@ export const QuestionsPage = () => {
                           <div className="text-xs text-gray-500">{question.category}</div>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4">
                         <div className="flex items-center space-x-3">
                           {question.profilePicture ? (
                             <img
@@ -136,11 +136,11 @@ export const QuestionsPage = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900 max-w-md truncate">
+                        <div className="text-sm text-gray-900 max-w-xs line-clamp-2" title={question.question}>
                           {question.question}
                         </div>
                         <div className="flex items-center space-x-2 mt-1">
-                          {question.difficulty && (
+                          {/* {question.difficulty && (
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                               question.difficulty === 'easy' ? 'bg-green-100 text-green-800' :
                               question.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' :
@@ -148,10 +148,10 @@ export const QuestionsPage = () => {
                             }`}>
                               {question.difficulty}
                             </span>
-                          )}
+                          )} */}
                           {question.return && (
                             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                              Para devolução
+                              Concluída
                             </span>
                           )}
                         </div>

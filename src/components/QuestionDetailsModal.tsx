@@ -78,7 +78,7 @@ export const QuestionDetailsModal: React.FC<QuestionDetailsModalProps> = ({
 
           {/* Badges */}
           <div className="flex items-center flex-wrap gap-2">
-            {question.difficulty && (
+            {/* {question.difficulty && (
               <span
                 className={`px-3 py-1 text-xs font-medium rounded-full ${
                   question.difficulty === 'easy'
@@ -90,18 +90,18 @@ export const QuestionDetailsModal: React.FC<QuestionDetailsModalProps> = ({
               >
                 {question.difficulty === 'easy' ? 'Fácil' : question.difficulty === 'medium' ? 'Médio' : 'Difícil'}
               </span>
-            )}
-            {question.type && (
+            )} */}
+            {/* {question.type && (
               <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
                 {question.type.replace('_', ' ')}
               </span>
-            )}
-            {question.category && (
+            )} */}
+            {/* {question.category && (
               <span className="flex items-center px-3 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
                 <Book className="w-3 h-3 mr-1" />
                 {question.category}
               </span>
-            )}
+            )} */}
           </div>
 
           {/* Opções (se houver) */}

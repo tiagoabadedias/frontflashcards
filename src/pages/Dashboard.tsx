@@ -105,7 +105,7 @@ export const Dashboard = () => {
          <div className="card p-6 flex items-center justify-between bg-gradient-to-r from-gray-900 to-gray-800 text-white">
             <div>
                <p className="text-gray-400 text-sm font-medium mb-1">Nota Média Geral</p>
-               <h3 className="text-3xl font-bold">{stats?.averageScore || '0.0'}</h3>
+               <h3 className="text-3xl font-bold">{stats?.averageScore || ''}</h3>
                <p className="text-xs text-gray-400 mt-2">Performance global da turma</p>
             </div>
             <div className="p-4 bg-white/10 rounded-full">

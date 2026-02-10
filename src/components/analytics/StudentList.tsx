@@ -64,14 +64,14 @@ export const StudentList: React.FC<StudentListProps> = ({ students, campaignId }
     if (score >= 9) return 'bg-emerald-100 text-emerald-800 border-emerald-200';
     if (score >= 7) return 'bg-blue-100 text-blue-800 border-blue-200';
     if (score >= 5) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-    return 'bg-red-100 text-red-800 border-red-200';
+    return 'bg-yellow-100 text-yellow-800 border-yellow-200';
   };
 
   const getScoreLabel = (score: number) => {
     if (score >= 9) return 'Excelente';
     if (score >= 7) return 'Bom';
     if (score >= 5) return 'Regular';
-    return 'Crítico';
+    return 'Aguardando';
   };
 
   return (
@@ -199,7 +199,7 @@ export const StudentList: React.FC<StudentListProps> = ({ students, campaignId }
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${getScoreColor(student.avgScore)}`}>
-                        {typeof student.avgScore === 'number' ? student.avgScore.toFixed(1) : '0.0'} - {getScoreLabel(student.avgScore)}
+                        {typeof student.avgScore === 'number' ? student.avgScore.toFixed(1) : ''} - {getScoreLabel(student.avgScore)}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
