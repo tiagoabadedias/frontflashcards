@@ -49,8 +49,8 @@ export const GroupsPage = () => {
   // Filtros e ordenação
   const filteredAndSortedGroups = useMemo(() => {
     let filtered = groups.filter(group => {
-      const matchesSearch = group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           group.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = (group.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (group.description || '').toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesStatus = statusFilter === '' ||
                            (statusFilter === 'active' && group.isActive) ||
@@ -65,12 +65,12 @@ export const GroupsPage = () => {
       
       switch (sortField) {
         case 'name':
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
+          aValue = (a.name || '').toLowerCase();
+          bValue = (b.name || '').toLowerCase();
           break;
         case 'participants':
-          aValue = a.participants.length;
-          bValue = b.participants.length;
+          aValue = a.participants?.length || 0;
+          bValue = b.participants?.length || 0;
           break;
         case 'isActive':
           aValue = a.isActive ? 1 : 0;
@@ -360,8 +360,8 @@ export const GroupsPage = () => {
                     <td className="px-4 py-4">
                       <div className="flex items-center space-x-2">
                         <Users className="w-4 h-4 text-gray-400" />
-                        <span className="font-medium">{group.participants.length}</span>
-                        {group.participants.length > 0 && (
+                        <span className="font-medium">{group.participants?.length || 0}</span>
+                        {group.participants && group.participants.length > 0 && (
                           <div className="flex -space-x-1">
                             {group.participants.slice(0, 3).map((phone, idx) => (
                               <div
@@ -434,9 +434,9 @@ export const GroupsPage = () => {
                       <td colSpan={6} className="px-4 py-4 bg-gray-50">
                         <div className="space-y-4">
                           <div>
-                            <h4 className="font-medium text-gray-900 mb-2">Participantes ({group.participants.length})</h4>
+                            <h4 className="font-medium text-gray-900 mb-2">Participantes ({group.participants?.length || 0})</h4>
                             <div className="flex flex-wrap gap-2">
-                              {group.participants.map((phone, idx) => (
+                              {group.participants?.map((phone, idx) => (
                                 <span
                                   key={idx}
                                   className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm"

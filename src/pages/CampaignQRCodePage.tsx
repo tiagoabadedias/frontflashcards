@@ -1,10 +1,10 @@
 import { useParams, Link } from 'react-router-dom';
 import { QrCode, Target, ExternalLink, Check } from 'lucide-react';
-import { useCampaign } from '../hooks/useCampaigns';
+import { usePublicCampaign } from '../hooks/useCampaigns';
 
 export const CampaignQRCodePage = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: campaign, isLoading } = useCampaign(id!);
+  const { data: campaign, isLoading } = usePublicCampaign(id!);
 
   if (isLoading) {
     return (
@@ -31,7 +31,7 @@ export const CampaignQRCodePage = () => {
     );
   }
 
-  const text = `Quero me inscrever na campanha ${campaign.name} ${campaign._id}`;
+  const text = `Quero me inscrever na trilha ${campaign.name} ${campaign._id}`;
   const encodedText = encodeURIComponent(text);
   const whatsappUrl = `https://api.whatsapp.com/send?phone=555121654734&text=${encodedText}`;
   const qrCodeUrl = `https://api-qrcode-three.vercel.app/qrcode?text=${encodeURIComponent(whatsappUrl)}`;
@@ -63,18 +63,18 @@ export const CampaignQRCodePage = () => {
           <div className="lg:col-span-3 text-center lg:text-left order-2 lg:order-1">
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-semibold mb-6">
               <Target className="w-3 h-3 mr-2" />
-              Convite para Campanha
+              Convite para Trilha
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
-              Participe da campanha <br />
+              Participe da trilha <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">
                 {campaign.name}
               </span>
             </h1>
             
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-              {campaign.description || "Participe desta campanha para testar seus conhecimentos e receber feedback instantâneo."}
+              {campaign.description || "Participe desta trilha para testar seus conhecimentos e receber feedback instantâneo."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">

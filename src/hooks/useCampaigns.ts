@@ -18,6 +18,15 @@ export const useCampaign = (id: string) => {
   });
 };
 
+export const usePublicCampaign = (id: string) => {
+  return useQuery({
+    queryKey: ['public-campaign', id],
+    queryFn: () => campaignService.getPublicById(id),
+    enabled: !!id,
+    retry: false, // Não tentar novamente se falhar (ex: 404)
+  });
+};
+
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
   

@@ -9,6 +9,15 @@ export const api = axios.create({
   },
 });
 
+// @ts-ignore
+export const publicApi = axios.create({
+  // @ts-ignore
+  baseURL: import.meta.env.VITE_API_URL || 'https://flashcards-sooty-ten.vercel.app/api/v1',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 // Interceptor para adicionar o token JWT
 api.interceptors.request.use(
   (config) => {

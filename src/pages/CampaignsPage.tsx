@@ -111,8 +111,8 @@ export const CampaignsPage = () => {
     const phoneNumbers: string[] = [];
     
     campaign.groups.forEach((group) => {
-      if (typeof group === 'object' && group.participants) {
-        phoneNumbers.push(...group.participants);
+      if (group && typeof group === 'object' && 'participants' in group) {
+        phoneNumbers.push(...(group.participants || []));
       } else if (typeof group === 'string') {
         const fullGroup = allGroups.find(g => g._id === group);
         if (fullGroup && fullGroup.participants) {

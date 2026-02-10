@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api, publicApi } from './api';
 import { 
   Campaign, 
   CreateCampaignData, 
@@ -18,6 +18,12 @@ export const campaignService = {
   // Obter campanha por ID
   async getById(id: string) {
     const response = await api.get<Campaign>(`/campaigns/${id}`);
+    return response.data;
+  },
+
+  // Obter campanha por ID (Público)
+  async getPublicById(id: string) {
+    const response = await publicApi.get<Campaign>(`/campaigns/public/${id}`);
     return response.data;
   },
 
