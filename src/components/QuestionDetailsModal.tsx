@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Hash, AlertCircle, Play, Pause } from 'lucide-react';
+import { X, Hash, AlertCircle, Play, Pause, Book } from 'lucide-react';
 import { Question } from '../types';
 
 interface QuestionDetailsModalProps {
