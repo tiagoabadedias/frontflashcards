@@ -4,7 +4,8 @@ import {
   Trash2, 
   Eye, 
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Sparkles
 } from 'lucide-react';
 import { Campaign, Question, CreateQuestionForCampaignData } from '../types';
 import { 
@@ -12,6 +13,8 @@ import {
   useCreateCampaignQuestion, 
   useDeleteCampaignQuestion 
 } from '../hooks/useCampaignQuestions';
+import { campaignService } from '../services/campaignService';
+import { QuestionQuantityModal } from './QuestionQuantityModal';
 
 interface CampaignQuestionsSectionProps {
   campaign: Campaign;
@@ -23,6 +26,8 @@ export const CampaignQuestionsSection: React.FC<CampaignQuestionsSectionProps> =
   const [activeTab, setActiveTab] = useState<'list' | 'create'>('list');
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
   const [showQuestionModal, setShowQuestionModal] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [showQuantityModal, setShowQuantityModal] = useState(false);
 
   // Form data para criação de questão (simplificado)
   const [questionFormData, setQuestionFormData] = useState<CreateQuestionForCampaignData>({
@@ -75,6 +80,37 @@ export const CampaignQuestionsSection: React.FC<CampaignQuestionsSectionProps> =
       } catch (error) {
         // Error already handled in hook
       }
+    }
+  };
+
+  const handleOpenGenerateModal = () => {
+    setShowQuantityModal(true);
+  };
+
+  const handleGenerateQuestions = async (quantity: number) => {
+    setIsGenerating(true);
+    try {
+      const generatedQuestions = await campaignService.generateCampaignQuestions('', {
+        topic: campaign.description || campaign.name,
+        quantity
+      });
+      
+      // Criar cada questão gerada
+      for (const question of generatedQuestions) {
+        await createQuestionMutation.mutateAsync({
+          campaignId: campaign._id!,
+          data: question,
+        });
+      }
+      
+      alert(`${generatedQuestions.length} questões geradas e adicionadas com sucesso!`);
+      setActiveTab('list');
+      setShowQuantityModal(false);
+    } catch (error) {
+      console.error('Erro ao gerar questões:', error);
+      alert('Erro ao gerar questões. Verifique se a trilha possui descrição.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -203,13 +239,29 @@ export const CampaignQuestionsSection: React.FC<CampaignQuestionsSectionProps> =
           {/* Aba Criar Questão */}
           {activeTab === 'create' && (
             <form onSubmit={handleCreateQuestion} className="space-y-6">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="text-lg font-medium text-blue-900 mb-2">
-                  ➕ Criar Nova Questão
-                </h3>
-                <p className="text-blue-700 text-sm">
-                  Adicione uma nova questão à trilha "{campaign.name}"
-                </p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex justify-between items-center">
+                <div>
+                  <h3 className="text-lg font-medium text-blue-900 mb-2">
+                    ➕ Criar Nova Questão
+                  </h3>
+                  <p className="text-blue-700 text-sm">
+                    Adicione uma nova questão à trilha "{campaign.name}"
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleOpenGenerateModal}
+                  disabled={isGenerating}
+                  className="flex items-center px-3 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm font-medium rounded-md hover:shadow-lg transition-all disabled:opacity-50"
+                >
+                  {isGenerating ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  ) : (
+                    <Sparkles className="w-4 h-4 mr-2" />
+                  )}
+                  Gerar com IA
+                </button>
               </div>
 
               <div>
@@ -336,6 +388,13 @@ export const CampaignQuestionsSection: React.FC<CampaignQuestionsSectionProps> =
           </div>
         </div>
       )}
+
+      <QuestionQuantityModal
+        isOpen={showQuantityModal}
+        onClose={() => !isGenerating && setShowQuantityModal(false)}
+        onConfirm={handleGenerateQuestions}
+        isLoading={isGenerating}
+      />
     </div>
   );
 };

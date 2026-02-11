@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Users, Plus, Trash2, Save } from 'lucide-react';
+import { X, Users, Plus, Trash2, Save, Settings, Phone, AlertCircle } from 'lucide-react';
 import { useUpdateGroup, useAddParticipant, useRemoveParticipant } from '../hooks/useGroups';
 import { Group } from '../types';
 
@@ -9,6 +9,7 @@ interface EditGroupModalProps {
 }
 
 export const EditGroupModal: React.FC<EditGroupModalProps> = ({ group, onClose }) => {
+  const [activeTab, setActiveTab] = useState<'general' | 'participants'>('general');
   const [formData, setFormData] = useState({
     name: group.name,
     isActive: group.isActive ?? true,
@@ -16,6 +17,7 @@ export const EditGroupModal: React.FC<EditGroupModalProps> = ({ group, onClose }
   
   const [participants, setParticipants] = useState<string[]>(group.participants || []);
   const [newParticipant, setNewParticipant] = useState('');
+  const [error, setError] = useState('');
 
   const updateGroupMutation = useUpdateGroup();
   const addParticipantMutation = useAddParticipant();
@@ -40,20 +42,38 @@ export const EditGroupModal: React.FC<EditGroupModalProps> = ({ group, onClose }
     }
   };
 
+  const validatePhone = (phone: string) => {
+    // Validação simples: remove não-números e verifica tamanho mínimo
+    const cleanPhone = phone.replace(/\D/g, '');
+    return cleanPhone.length >= 10;
+  };
+
   const handleAddParticipant = async () => {
     const phoneNumber = newParticipant.trim();
-    if (phoneNumber && !participants.includes(phoneNumber)) {
-      try {
-        await addParticipantMutation.mutateAsync({
-          id: group._id!,
-          phoneNumber,
-        });
-        // Atualizar estado local imediatamente
-        setParticipants(prev => [...prev, phoneNumber]);
-        setNewParticipant('');
-      } catch (error) {
-        // Erro já tratado pelo hook
-      }
+    setError('');
+
+    if (!phoneNumber) return;
+
+    if (!validatePhone(phoneNumber)) {
+      setError('Telefone inválido. Digite pelo menos 10 números.');
+      return;
+    }
+
+    if (participants.includes(phoneNumber)) {
+      setError('Este telefone já está cadastrado no grupo.');
+      return;
+    }
+
+    try {
+      await addParticipantMutation.mutateAsync({
+        id: group._id!,
+        phoneNumber,
+      });
+      // Atualizar estado local imediatamente
+      setParticipants(prev => [...prev, phoneNumber]);
+      setNewParticipant('');
+    } catch (error) {
+      setError('Erro ao adicionar participante.');
     }
   };
 
@@ -81,142 +101,199 @@ export const EditGroupModal: React.FC<EditGroupModalProps> = ({ group, onClose }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">Editar Grupo</h2>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <h2 className="text-lg font-bold text-gray-900">Editar Grupo</h2>
           <button
             onClick={onClose}
-            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-1 text-gray-400 hover:text-gray-600 transition-colors rounded-full hover:bg-gray-100"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Nome do Grupo *
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Digite o nome do grupo"
-              required
-            />
-          </div>
+        {/* Tabs */}
+        <div className="flex border-b border-gray-100">
+          <button
+            onClick={() => setActiveTab('general')}
+            className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors flex items-center justify-center gap-2 ${
+              activeTab === 'general'
+                ? 'border-primary-600 text-primary-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Settings className="w-4 h-4" />
+            Geral
+          </button>
+          <button
+            onClick={() => setActiveTab('participants')}
+            className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors flex items-center justify-center gap-2 ${
+              activeTab === 'participants'
+                ? 'border-primary-600 text-primary-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            Participantes
+            <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs">
+              {participants.length}
+            </span>
+          </button>
+        </div>
 
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="isActive"
-              checked={formData.isActive}
-              onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label htmlFor="isActive" className="ml-2 block text-sm text-gray-700">
-              Grupo ativo
-            </label>
-          </div>
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {activeTab === 'general' ? (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="label">
+                  Nome do Grupo *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  className="input"
+                  placeholder="Digite o nome do grupo"
+                  required
+                />
+              </div>
 
-          <div className="flex items-center space-x-3 pt-4 border-t">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={updateGroupMutation.isPending || !formData.name.trim()}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-            >
-              {updateGroupMutation.isPending ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Salvar
-                </>
-              )}
-            </button>
-          </div>
-        </form>
+              <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <input
+                  type="checkbox"
+                  id="isActive"
+                  checked={formData.isActive}
+                  onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
+                  className="h-5 w-5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
+                />
+                <label htmlFor="isActive" className="ml-3 block text-sm font-medium text-gray-700 cursor-pointer select-none">
+                  Grupo Ativo
+                  <p className="text-xs text-gray-500 font-normal mt-0.5">
+                    Grupos inativos não recebem disparos de novas campanhas.
+                  </p>
+                </label>
+              </div>
 
-        {/* Seção de Participantes */}
-        <div className="border-t p-6">
-          <h3 className="text-sm font-medium text-gray-700 mb-4">
-            📱 Participantes ({participants.length})
-          </h3>
-          
-          {/* Adicionar novo participante */}
-          <div className="bg-blue-50 p-3 rounded-lg mb-4">
-            <label className="block text-xs font-medium text-blue-700 mb-2">
-              Adicionar Telefone
-            </label>
-            <div className="flex items-center space-x-2">
-              <input
-                type="tel"
-                value={newParticipant}
-                onChange={(e) => setNewParticipant(e.target.value)}
-                className="flex-1 px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                placeholder="Ex: 11999999999"
-                onKeyPress={handleKeyPress}
-              />
-              <button
-                type="button"
-                onClick={handleAddParticipant}
-                disabled={!newParticipant.trim() || addParticipantMutation.isPending || participants.includes(newParticipant.trim())}
-                className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
-                title={participants.includes(newParticipant.trim()) ? "Telefone já cadastrado" : "Adicionar telefone"}
-              >
-                {addParticipantMutation.isPending ? (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <Plus className="w-4 h-4" />
-                )}
-              </button>
-            </div>
-            {participants.includes(newParticipant.trim()) && newParticipant.trim() && (
-              <p className="text-xs text-red-600 mt-1">Este telefone já está cadastrado no grupo</p>
-            )}
-          </div>
-
-          {/* Lista de participantes */}
-          <div className="space-y-2 max-h-64 overflow-y-auto">
-            {participants.map((participant, index) => (
-              <div key={`${participant}-${index}`} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
-                <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-semibold text-blue-600">{index + 1}</span>
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">{participant}</span>
-                </div>
+              <div className="pt-4">
                 <button
-                  type="button"
-                  onClick={() => handleRemoveParticipant(participant)}
-                  disabled={removeParticipantMutation.isPending}
-                  className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors disabled:opacity-50"
-                  title={`Remover ${participant}`}
+                  type="submit"
+                  disabled={updateGroupMutation.isPending || !formData.name.trim()}
+                  className="btn btn-primary w-full flex items-center justify-center"
                 >
-                  {removeParticipantMutation.isPending ? (
-                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                  {updateGroupMutation.isPending ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
-                    <Trash2 className="w-4 h-4" />
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Salvar Alterações
+                    </>
                   )}
                 </button>
               </div>
-            ))}
-            {participants.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                <Users className="mx-auto h-8 w-8 text-gray-300 mb-2" />
-                <p className="text-sm">Nenhum participante no grupo</p>
-                <p className="text-xs">Adicione telefones acima</p>
+            </form>
+          ) : (
+            <div className="space-y-6">
+              {/* Adicionar Participante */}
+              <div className="bg-primary-50/50 p-4 rounded-xl border border-primary-100 space-y-3">
+                <label className="block text-xs font-semibold text-primary-700 uppercase tracking-wider">
+                  Adicionar Novo Participante
+                </label>
+                
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                      type="tel"
+                      value={newParticipant}
+                      onChange={(e) => {
+                        setNewParticipant(e.target.value);
+                        setError('');
+                      }}
+                      className={`input pl-10 py-2 text-sm ${error ? 'border-red-300 focus:ring-red-200' : ''}`}
+                      placeholder="Ex: 11999999999"
+                      onKeyPress={handleKeyPress}
+                    />
+                  </div>
+                  <button
+                    onClick={handleAddParticipant}
+                    disabled={!newParticipant.trim() || addParticipantMutation.isPending}
+                    className="btn btn-primary px-4 py-2 shadow-none disabled:opacity-70"
+                  >
+                    {addParticipantMutation.isPending ? (
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Plus className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+                
+                {error && (
+                  <div className="flex items-center text-xs text-red-600 font-medium animate-fade-in">
+                    <AlertCircle className="w-3 h-3 mr-1.5" />
+                    {error}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+
+              {/* Lista */}
+              <div>
+                <h3 className="text-sm font-medium text-gray-500 mb-3 uppercase tracking-wider">
+                  Lista de Membros
+                </h3>
+                
+                <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+                  {participants.length === 0 ? (
+                    <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50">
+                      <Users className="mx-auto h-10 w-10 text-gray-300 mb-3" />
+                      <p className="text-sm font-medium text-gray-900">Nenhum participante</p>
+                      <p className="text-xs text-gray-500 mt-1">Adicione números de telefone acima</p>
+                    </div>
+                  ) : (
+                    participants.map((participant, index) => (
+                      <div 
+                        key={`${participant}-${index}`} 
+                        className="group flex items-center justify-between p-3 bg-white hover:bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-all duration-200 shadow-sm"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-gradient-to-br from-primary-100 to-primary-50 rounded-full flex items-center justify-center text-primary-600 text-xs font-bold border border-primary-100">
+                            {index + 1}
+                          </div>
+                          <span className="text-sm font-medium text-gray-700 font-mono tracking-wide">
+                            {participant}
+                          </span>
+                        </div>
+                        
+                        <button
+                          onClick={() => handleRemoveParticipant(participant)}
+                          disabled={removeParticipantMutation.isPending}
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                          title="Remover participante"
+                        >
+                          {removeParticipantMutation.isPending ? (
+                            <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <Trash2 className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer (Apenas botões de fechar se necessário, ou vazio já que as ações estão dentro das abas) */}
+        <div className="p-4 border-t border-gray-100 bg-gray-50 rounded-b-lg flex justify-end">
+          <button
+            onClick={onClose}
+            className="btn btn-secondary text-sm py-2"
+          >
+            Fechar
+          </button>
         </div>
       </div>
     </div>

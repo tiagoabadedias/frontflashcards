@@ -205,13 +205,13 @@ export const GroupsPage = () => {
             <div className="flex items-center space-x-2 mr-4">
               <button 
                 onClick={() => handleBulkToggleStatus(true)}
-                className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700"
+                className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 shadow-sm transition-all duration-200"
               >
                 Ativar ({selectedGroups.length})
               </button>
               <button 
                 onClick={() => handleBulkToggleStatus(false)}
-                className="px-3 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700"
+                className="px-3 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 shadow-sm transition-all duration-200"
               >
                 Desativar ({selectedGroups.length})
               </button>
@@ -220,14 +220,14 @@ export const GroupsPage = () => {
           
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="btn btn-primary flex items-center shadow-lg shadow-primary-500/30"
           >
             <Plus className="w-4 h-4 mr-2" />
             Novo Grupo
           </button>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="btn btn-secondary flex items-center"
           >
             <Filter className="w-4 h-4 mr-2" />
             Filtros
@@ -237,10 +237,10 @@ export const GroupsPage = () => {
 
       {/* Filtros */}
       {showFilters && (
-        <div className="bg-white p-4 rounded-lg border border-gray-200 space-y-4">
+        <div className="card p-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="label">
                 Buscar por nome ou descrição
               </label>
               <div className="relative">
@@ -250,18 +250,18 @@ export const GroupsPage = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Digite para buscar..."
-                  className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="input pl-10"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="label">
                 Status
               </label>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="input"
               >
                 <option value="">Todos os status</option>
                 <option value="active">Ativos</option>
@@ -270,13 +270,13 @@ export const GroupsPage = () => {
             </div>
             {/* Removido o seletor de viewMode pois agora é sempre lista */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="label">
                 Itens por página
               </label>
               <select
                 value={itemsPerPage}
                 onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="input"
               >
                 <option value={5}>5 por página</option>
                 <option value={10}>10 por página</option>
@@ -289,7 +289,7 @@ export const GroupsPage = () => {
       )}
 
       {/* Lista de Grupos */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <div className="card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -324,14 +324,14 @@ export const GroupsPage = () => {
             <tbody className="divide-y divide-gray-200">
               {paginatedGroups.map((group) => (
                 <React.Fragment key={group._id}>
-                  <tr className={`hover:bg-gray-50 ${selectedGroups.includes(group._id!) ? 'bg-blue-50' : ''}`}>
+                  <tr className={`hover:bg-gray-50 transition-colors ${selectedGroups.includes(group._id!) ? 'bg-primary-50' : ''}`}>
                     <td className="px-4 py-4">
                       <button
                         onClick={() => toggleGroupSelection(group._id!)}
                         className="flex items-center"
                       >
                         {selectedGroups.includes(group._id!) ? (
-                          <CheckSquare className="w-4 h-4 text-blue-600" />
+                          <CheckSquare className="w-4 h-4 text-primary-600" />
                         ) : (
                           <Square className="w-4 h-4 text-gray-400" />
                         )}
@@ -366,7 +366,7 @@ export const GroupsPage = () => {
                             {group.participants.slice(0, 3).map((phone, idx) => (
                               <div
                                 key={idx}
-                                className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white font-medium border-2 border-white"
+                                className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-xs text-white font-medium border-2 border-white"
                               >
                                 {phone.slice(-2)}
                               </div>
@@ -398,28 +398,32 @@ export const GroupsPage = () => {
                       <div className="flex items-center space-x-1">
                         <button
                           onClick={() => window.open(`/groups/${group._id}/qrcode`, '_blank')}
-                          className="p-1 text-purple-600 hover:bg-purple-50 rounded"
+                          className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                           title="QR Code"
                         >
                           <QrCode className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setEditingGroup(group)}
-                          className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="Editar"
                         >
                           <Edit3 className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleToggleStatus(group)}
-                          className="p-1 text-gray-600 hover:bg-gray-50 rounded"
+                          className={`p-1.5 rounded-lg transition-colors ${
+                            group.isActive 
+                              ? 'text-gray-600 hover:bg-gray-100' 
+                              : 'text-green-600 hover:bg-green-50'
+                          }`}
                           title={group.isActive ? 'Desativar' : 'Ativar'}
                         >
                           {group.isActive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                         <button
                           onClick={() => handleDeleteGroup(group._id!)}
-                          className="p-1 text-red-600 hover:bg-red-50 rounded"
+                          className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           title="Deletar"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -439,7 +443,7 @@ export const GroupsPage = () => {
                               {group.participants?.map((phone, idx) => (
                                 <span
                                   key={idx}
-                                  className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm"
+                                  className="px-2 py-1 bg-primary-50 text-primary-700 rounded-md text-sm"
                                 >
                                   {phone}
                                 </span>
@@ -501,9 +505,9 @@ export const GroupsPage = () => {
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`px-3 py-1 text-sm rounded ${
+                        className={`px-3 py-1 text-sm rounded transition-colors ${
                           currentPage === page
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-primary-600 text-white'
                             : 'border border-gray-300 hover:bg-gray-50'
                         }`}
                       >
@@ -539,7 +543,7 @@ export const GroupsPage = () => {
             <div className="mt-6">
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                className="btn btn-primary flex items-center mx-auto shadow-lg shadow-primary-500/30"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Criar Primeiro Grupo

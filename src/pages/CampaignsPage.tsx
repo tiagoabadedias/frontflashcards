@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useCampaigns, useCreateCampaign, useDeleteCampaign, useToggleCampaignStatus, useStartCampaign } from '../hooks/useCampaigns';
+import { useCampaigns, useDeleteCampaign, useToggleCampaignStatus, useStartCampaign } from '../hooks/useCampaigns';
 import { useGroups } from '../hooks/useGroups';
 import { campaignService } from '../services/campaignService';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
-import { CreateCampaignData, Campaign } from '../types';
+import { Campaign } from '../types';
+import { CreateCampaignModal } from '../components/CreateCampaignModal';
 import { EditCampaignModal } from '../components/EditCampaignModal';
 import { Plus, Edit, Trash2, Power, Users, Play, BarChart3, Search, QrCode } from 'lucide-react';
 import { format } from 'date-fns';
@@ -21,12 +21,9 @@ export const CampaignsPage = () => {
 
   const { data: campaigns, isLoading, error } = useCampaigns();
   const { data: allGroups } = useGroups();
-  const createCampaignMutation = useCreateCampaign();
   const deleteCampaignMutation = useDeleteCampaign();
   const toggleStatusMutation = useToggleCampaignStatus();
   const startCampaignMutation = useStartCampaign();
-
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateCampaignData>();
 
   // Filter campaigns based on search term and active filter
   const filteredCampaigns = useMemo(() => {
@@ -49,20 +46,6 @@ export const CampaignsPage = () => {
 
     return filtered;
   }, [campaigns, searchTerm, activeFilter]);
-
-  const onSubmit = async (data: CreateCampaignData) => {
-    try {
-      const formattedData = {
-        ...data,
-        isActive: data.isActive === 'true' || data.isActive === true,
-      };
-      await createCampaignMutation.mutateAsync(formattedData);
-      reset();
-      setShowCreateForm(false);
-    } catch (error) {
-      // Error is handled by the mutation
-    }
-  };
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Tem certeza que deseja deletar esta trilha?')) {
@@ -181,93 +164,9 @@ export const CampaignsPage = () => {
         </button>
       </div>
 
-      {/* Create Campaign Form */}
+      {/* Create Campaign Modal */}
       {showCreateForm && (
-        <div className="card p-6 animate-fade-in">
-          <h3 className="text-lg font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Nova Trilha</h3>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="label">Nome da Trilha *</label>
-                <input
-                  {...register('name', { required: 'Nome é obrigatório' })}
-                  type="text"
-                  className="input"
-                  placeholder="Ex: Revisão de Matemática - 1º Bimestre"
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-xs mt-1 font-medium">{errors.name.message}</p>
-                )}
-              </div>
-              <div>
-                <label className="label">Status Inicial</label>
-                <div className="relative">
-                  <select {...register('isActive')} className="input appearance-none">
-                    <option value="true">Ativa</option>
-                    <option value="false">Inativa</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
-                    <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                      <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <label className="label">Descrição *</label>
-              <textarea
-                {...register('description', { required: 'Descrição é obrigatória' })}
-                rows={3}
-                className="input resize-none"
-                placeholder="Descreva o objetivo desta campanha..."
-              />
-              {errors.description && (
-                <p className="text-red-500 text-xs mt-1 font-medium">{errors.description.message}</p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="label">Data de Início</label>
-                <input
-                  {...register('startDate')}
-                  type="date"
-                  className="input"
-                />
-              </div>
-              <div>
-                <label className="label">Data de Fim</label>
-                <input
-                  {...register('endDate')}
-                  type="date"
-                  className="input"
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowCreateForm(false);
-                  reset();
-                }}
-                className="btn btn-secondary"
-                >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                disabled={createCampaignMutation.isPending}
-                className="btn btn-primary min-w-[120px]"
-              >
-                {createCampaignMutation.isPending ? <LoadingSpinner size="sm" /> : 'Criar Trilha'}
-              </button>
-            </div>
-          </form>
-        </div>
+        <CreateCampaignModal onClose={() => setShowCreateForm(false)} />
       )}
 
       {/* Filters & Search */}

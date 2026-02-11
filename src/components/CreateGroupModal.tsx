@@ -75,20 +75,20 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ onClose }) =
               type="text"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input"
               placeholder="Digite o nome do grupo"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="label">
               Descrição
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input resize-none"
               placeholder="Descrição opcional do grupo"
               rows={3}
             />
@@ -96,33 +96,33 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ onClose }) =
 
           <div>
             <div className="flex items-center justify-between mb-3">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="label mb-0">
                 Participantes (Telefones)
               </label>
               <button
                 type="button"
                 onClick={addParticipantField}
-                className="flex items-center px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                className="flex items-center px-2 py-1 text-xs text-primary-600 hover:bg-primary-50 rounded transition-colors font-medium"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Adicionar
               </button>
             </div>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
               {formData.participants.map((participant, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <input
                     type="tel"
                     value={participant}
                     onChange={(e) => updateParticipant(index, e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="input py-2"
                     placeholder="Ex: 11999999999"
                   />
                   {formData.participants.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeParticipant(index)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -138,25 +138,25 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ onClose }) =
               id="isActive"
               checked={formData.isActive}
               onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
             />
-            <label htmlFor="isActive" className="ml-2 block text-sm text-gray-700">
+            <label htmlFor="isActive" className="ml-2 block text-sm text-gray-700 cursor-pointer">
               Grupo ativo
             </label>
           </div>
 
-          <div className="flex items-center space-x-3 pt-4 border-t">
+          <div className="flex items-center space-x-3 pt-4 border-t border-gray-100">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              className="btn btn-secondary flex-1"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={createGroupMutation.isPending || !formData.name.trim()}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="btn btn-primary flex-1 flex items-center justify-center"
             >
               {createGroupMutation.isPending ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

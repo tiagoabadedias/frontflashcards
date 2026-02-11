@@ -189,7 +189,7 @@ export const QuestionsPage = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <button
                           onClick={() => setSelectedQuestion(question)}
-                          className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition-colors"
+                          className="inline-flex items-center px-3 py-1.5 border border-primary-200 text-xs font-medium rounded-lg text-primary-700 bg-primary-50 hover:bg-primary-100 transition-colors"
                           title="Ver detalhes"
                         >
                           Ver detalhes

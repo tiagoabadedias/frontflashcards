@@ -155,13 +155,43 @@ export const campaignService = {
     await api.delete(`/campaigns/${campaignId}/questions/${questionId}`);
   },
 
-  // Gerar questões automaticamente (placeholder para futura implementação)
-  async generateCampaignQuestions(_campaignId: string, _data: GenerateQuestionsData) {
-    // Por enquanto, retorna erro informativo
-    throw new Error('Funcionalidade de geração automática será implementada em breve');
+  // Gerar questões automaticamente
+  async generateCampaignQuestions(_campaignId: string, data: GenerateQuestionsData) {
+    // Webhook para geração de questões
+    const webhookUrl = 'https://n8n.srv1008656.hstgr.cloud/webhook/gerar-questions';
     
-    // Quando implementado:
-    // const response = await api.post<Question[]>(`/campaigns/${campaignId}/questions/generate`, data);
-    // return response.data;
+    try {
+      // O webhook espera: assunto e questions (quantidade)
+      const payload = {
+        assunto: data.topic,
+        questions: data.quantity
+      };
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      // O webhook retorna um array de objetos com question, answer, etc.
+      // Vamos garantir que o formato esteja correto para o nosso frontend
+      return result.map((q: any) => ({
+        question: q.question || q.pergunta,
+        answer: q.answer || q.resposta,
+        explanation: q.explanation || q.explicacao || '',
+        isActive: true
+      }));
+    } catch (error) {
+      console.error('Erro ao gerar questões:', error);
+      throw error;
+    }
   }
 };
