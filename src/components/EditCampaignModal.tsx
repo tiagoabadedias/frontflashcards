@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Save, Calendar, Users, Plus, Settings, HelpCircle, Check, Trash2, Target } from 'lucide-react';
+import { X, Save, Calendar, Users, Plus, Settings, HelpCircle, Trash2, Target } from 'lucide-react';
 import { Campaign } from '../types';
 import { useUpdateCampaign } from '../hooks/useCampaigns';
 import { useGroups } from '../hooks/useGroups';
@@ -155,7 +155,6 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
                 formData={formData}
                 selectedGroupToAdd={selectedGroupToAdd}
                 setSelectedGroupToAdd={setSelectedGroupToAdd}
-                groups={groups}
                 availableGroups={availableGroups}
                 selectedGroupsData={selectedGroupsData}
                 handleAddGroup={handleAddGroup}
@@ -312,7 +311,6 @@ interface GroupsSectionProps {
   formData: any;
   selectedGroupToAdd: string;
   setSelectedGroupToAdd: any;
-  groups: any[];
   availableGroups: any[];
   selectedGroupsData: any[];
   handleAddGroup: () => void;
@@ -326,7 +324,6 @@ const GroupsSection: React.FC<GroupsSectionProps> = ({
   formData,
   selectedGroupToAdd,
   setSelectedGroupToAdd,
-  groups,
   availableGroups,
   selectedGroupsData,
   handleAddGroup,
