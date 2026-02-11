@@ -18,6 +18,7 @@ export interface CreateCampaignData {
   startDate?: string;
   endDate?: string;
   groups?: string[];
+  questions?: CreateQuestionForCampaignData[]; // Novo campo para aceitar questões na criação
 }
 
 export interface Question {
