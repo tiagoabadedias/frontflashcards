@@ -129,7 +129,7 @@ export const Dashboard = () => {
       <CampaignPerformanceChart />
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols">
         {/* Recent Campaigns */}
         <div className="card lg:col-span-2 flex flex-col">
           <div className="p-6 border-b border-gray-100 flex items-center justify-between">
@@ -173,7 +173,7 @@ export const Dashboard = () => {
 
         {/* Quick Actions / Tips */}
         <div className="space-y-6">
-           <div className="card p-6 bg-gradient-to-br from-primary-600 to-primary-700 text-white border-none shadow-lg shadow-primary-500/20">
+           {/* <div className="card p-6 bg-gradient-to-br from-primary-600 to-primary-700 text-white border-none shadow-lg shadow-primary-500/20">
               <h3 className="text-lg font-bold mb-2">Dica Rápida</h3>
               <p className="text-primary-100 text-sm mb-4">
                  Crie perguntas engajadoras para aumentar a taxa de resposta dos seus alunos.
@@ -181,9 +181,9 @@ export const Dashboard = () => {
               <button className="w-full py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-colors backdrop-blur-sm border border-white/20">
                  Ver Melhores Práticas
               </button>
-           </div>
+           </div> */}
            
-           <div className="card p-6">
+           {/* <div className="card p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Status do Sistema</h3>
               <div className="space-y-4">
                  <div className="flex items-center justify-between">
@@ -208,7 +208,7 @@ export const Dashboard = () => {
                     <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded">Estável</span>
                  </div>
               </div>
-           </div>
+           </div> */}
         </div>
       </div>
     </div>
