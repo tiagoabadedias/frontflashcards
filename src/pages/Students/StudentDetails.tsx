@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { studentService } from '../../services/studentService';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Alert } from '../../components/Alert';
-import { ArrowLeft, BookOpen, BarChart3, MessageSquare, CheckCircle, Clock, Volume2 } from 'lucide-react';
+import { ArrowLeft, BookOpen, BarChart3, MessageSquare, Clock, Volume2 } from 'lucide-react';
 import { useState } from 'react';
 
 export const StudentDetails = () => {

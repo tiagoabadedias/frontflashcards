@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCampaigns, useDeleteCampaign, useToggleCampaignStatus, useStartCampaign } from '../hooks/useCampaigns';
 import { useGroups } from '../hooks/useGroups';
@@ -8,6 +8,7 @@ import { Alert } from '../components/Alert';
 import { Campaign } from '../types';
 import { CreateCampaignModal } from '../components/CreateCampaignModal';
 import { EditCampaignModal } from '../components/EditCampaignModal';
+import { useOnboardingActions } from '../contexts/OnboardingActionsContext';
 import { Plus, Edit, Trash2, Power, Users, Play, BarChart3, Search, QrCode } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -19,11 +20,21 @@ export const CampaignsPage = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const navigate = useNavigate();
 
+  const { registerActions, clearActions } = useOnboardingActions();
+
   const { data: campaigns, isLoading, error } = useCampaigns();
   const { data: allGroups } = useGroups();
   const deleteCampaignMutation = useDeleteCampaign();
   const toggleStatusMutation = useToggleCampaignStatus();
   const startCampaignMutation = useStartCampaign();
+
+  useEffect(() => {
+    registerActions({
+      openCreateCampaignModal: () => setShowCreateForm(true),
+    });
+
+    return () => clearActions(['openCreateCampaignModal']);
+  }, [clearActions, registerActions]);
 
   // Filter campaigns based on search term and active filter
   const filteredCampaigns = useMemo(() => {
@@ -157,6 +168,7 @@ export const CampaignsPage = () => {
         </div>
         <button
           onClick={() => setShowCreateForm(true)}
+          data-tour="campaigns-new"
           className="btn btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/30"
         >
           <Plus className="w-4 h-4" />
@@ -294,6 +306,7 @@ export const CampaignsPage = () => {
                         {campaign.isActive && campaign.groups && campaign.groups.length > 0 && !campaign.hasStarted && (
                           <button
                             onClick={() => handleStartCampaign(campaign)}
+                            data-tour="campaigns-start"
                             disabled={startCampaignMutation.isPending}
                             className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                             title="Iniciar Disparo"
@@ -314,6 +327,7 @@ export const CampaignsPage = () => {
                         {campaign.hasStarted && (
                           <button
                             onClick={() => window.open(`/campaigns/${campaign._id}/qrcode`, '_blank')}
+                            data-tour="campaigns-qrcode"
                             className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                             title="QR Code de Inscrição"
                           >

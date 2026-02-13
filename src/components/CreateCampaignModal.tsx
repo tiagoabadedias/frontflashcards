@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { X, Calendar, Users, ArrowRight, ArrowLeft, Check, Target, Layers, Plus, Trash2, HelpCircle, Sparkles } from 'lucide-react';
 import { useCreateCampaign } from '../hooks/useCampaigns';
@@ -6,6 +6,7 @@ import { useGroups } from '../hooks/useGroups';
 import { campaignService } from '../services/campaignService';
 import { CreateCampaignData, CreateQuestionForCampaignData } from '../types';
 import { QuestionQuantityModal } from './QuestionQuantityModal';
+import { useOnboardingActions } from '../contexts/OnboardingActionsContext';
 
 interface CreateCampaignModalProps {
   onClose: () => void;
@@ -17,6 +18,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({ onClos
   const [questions, setQuestions] = useState<CreateQuestionForCampaignData[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showQuantityModal, setShowQuantityModal] = useState(false);
+  const { registerActions, clearActions } = useOnboardingActions();
   
   // Estado para a nova pergunta sendo adicionada
   const [newQuestion, setNewQuestion] = useState<CreateQuestionForCampaignData>({
@@ -34,6 +36,14 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({ onClos
       isActive: 'true' // Valor padrão como string para o select
     }
   });
+
+  useEffect(() => {
+    registerActions({
+      goToCreateCampaignModalStep: (nextStep: number) => setStep(nextStep),
+    });
+
+    return () => clearActions(['goToCreateCampaignModalStep']);
+  }, [clearActions, registerActions]);
 
   // Observar campos para validação visual
   const watchName = watch('name');
@@ -212,6 +222,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({ onClos
                   <label className="label">Nome da Trilha *</label>
                   <input
                     {...register('name', { required: 'Nome é obrigatório', minLength: { value: 3, message: 'Mínimo de 3 caracteres' } })}
+                    data-tour="create-campaign-name"
                     type="text"
                     className={`input ${errors.name ? 'border-red-300 focus:ring-red-200' : ''}`}
                     placeholder="Ex: Revisão de Matemática - 1º Bimestre"
@@ -328,7 +339,10 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({ onClos
                     <p className="text-xs text-gray-400 mt-1">Crie grupos antes de vinculá-los à trilha.</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+                  <div
+                    data-tour="create-campaign-groups"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"
+                  >
                     {groups.map((group) => (
                       <button
                         type="button"
@@ -560,6 +574,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({ onClos
             <button
               type="button"
               onClick={handleNextStep}
+              data-tour="create-campaign-next"
               className="btn btn-primary flex items-center px-6"
             >
               Próximo
@@ -569,6 +584,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({ onClos
             <button
               type="submit"
               form="create-campaign-form"
+              data-tour="create-campaign-confirm"
               disabled={createCampaignMutation.isPending}
               className="btn btn-primary flex items-center px-8 shadow-lg shadow-primary-500/20"
             >

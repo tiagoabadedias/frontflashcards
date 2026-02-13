@@ -72,6 +72,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ onClose }) =
               Nome do Grupo *
             </label>
             <input
+              data-tour="create-group-name"
               type="text"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
@@ -155,6 +156,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ onClose }) =
             </button>
             <button
               type="submit"
+              data-tour="create-group-submit"
               disabled={createGroupMutation.isPending || !formData.name.trim()}
               className="btn btn-primary flex-1 flex items-center justify-center"
             >

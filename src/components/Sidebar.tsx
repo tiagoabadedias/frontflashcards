@@ -31,6 +31,13 @@ export const Sidebar = () => {
           <NavLink
             key={item.name}
             to={item.href}
+            data-tour={
+              item.href === '/groups'
+                ? 'nav-groups'
+                : item.href === '/campaigns'
+                  ? 'nav-campaigns'
+                  : undefined
+            }
             className={({ isActive }) =>
               `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
                 isActive

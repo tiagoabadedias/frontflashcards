@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+import { OnboardingTour } from './OnboardingTour';
 import { X } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { Home, Target, HelpCircle, Users, BarChart3, LogOut } from 'lucide-react';
@@ -22,6 +23,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
+      <OnboardingTour />
       {/* Desktop Sidebar */}
       <Sidebar />
 

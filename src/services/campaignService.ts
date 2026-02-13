@@ -74,8 +74,6 @@ export const campaignService = {
     phoneNumbers: string[];
     questions?: Question[];
   }) {
-    const webhookUrl = 'https://n8n.srv1008656.hstgr.cloud/webhook/775331c8-aeb6-482e-bb2c-e84db7166279';
-    
     try {
       // 1. Marcar campanha como iniciada no backend
       await api.patch(`/campaigns/${campaignData.campaign}/start`);
@@ -92,25 +90,6 @@ export const campaignService = {
         }
       }
 
-      // Obter ID do usuário logado
-      let userId = '';
-      try {
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-          const user = JSON.parse(userStr);
-          userId = user.id;
-        }
-      } catch (e) {
-        console.warn('Não foi possível obter o ID do usuário:', e);
-      }
-
-      // Dados finais a serem enviados
-      const dataToSend = {
-        ...campaignData,
-        questions: questions,
-        userId // Adiciona o userId ao payload
-      };
-      
       // const response = await fetch(webhookUrl, {
       //   method: 'POST',
       //   headers: {

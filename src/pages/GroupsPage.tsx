@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { 
   Users, 
   Plus, 
@@ -21,6 +21,7 @@ import { useGroups, useDeleteGroup, useToggleGroupStatus } from '../hooks/useGro
 import { Group } from '../types';
 import { CreateGroupModal } from '../components/CreateGroupModal';
 import { EditGroupModal } from '../components/EditGroupModal';
+import { useOnboardingActions } from '../contexts/OnboardingActionsContext';
 
 type SortField = 'name' | 'participants' | 'isActive' | 'lastActivity';
 type SortDirection = 'asc' | 'desc';
@@ -42,9 +43,19 @@ export const GroupsPage = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { registerActions, clearActions } = useOnboardingActions();
+
   const { data: groups = [], isLoading } = useGroups();
   const deleteGroupMutation = useDeleteGroup();
   const toggleStatusMutation = useToggleGroupStatus();
+
+  useEffect(() => {
+    registerActions({
+      openCreateGroupModal: () => setShowCreateModal(true),
+    });
+
+    return () => clearActions(['openCreateGroupModal']);
+  }, [clearActions, registerActions]);
 
   // Filtros e ordenação
   const filteredAndSortedGroups = useMemo(() => {
@@ -220,6 +231,7 @@ export const GroupsPage = () => {
           
           <button
             onClick={() => setShowCreateModal(true)}
+            data-tour="groups-new"
             className="btn btn-primary flex items-center shadow-lg shadow-primary-500/30"
           >
             <Plus className="w-4 h-4 mr-2" />
