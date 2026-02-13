@@ -111,19 +111,19 @@ export const campaignService = {
         userId // Adiciona o userId ao payload
       };
       
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify([dataToSend]),
-      });
+      // const response = await fetch(webhookUrl, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify([dataToSend]),
+      // });
       
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`Erro na requisição: ${response.status}`);
+      // }
       
-      return await response.json();
+      // return await response.json();
     } catch (error) {
       console.error('Erro ao iniciar campanha:', error);
       throw error;

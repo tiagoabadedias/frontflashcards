@@ -376,7 +376,7 @@ export const CampaignsPage = () => {
             <p className="text-gray-600 mb-6">
               Você tem certeza que deseja iniciar a trilha <strong>{confirmStartCampaign.name}</strong>?
               <br /><br />
-              <span className="text-red-600 font-medium">Atenção:</span> Após confirmar, o disparo será iniciado e você não poderá executar esta ação novamente para esta trilha nesta sessão.
+              <span className="text-red-600 font-medium">Atenção:</span> Após confirmar, o QRcode ficará disponível e a trilha será iniciada. Você não poderá executar esta ação novamente para esta trilha nesta sessão.
             </p>
             <div className="flex justify-end gap-3">
               <button

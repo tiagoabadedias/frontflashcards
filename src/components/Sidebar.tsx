@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Target, HelpCircle, Users, LogOut } from 'lucide-react';
+import { Home, Target, HelpCircle, Users, LogOut, GraduationCap } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Trilhas', href: '/campaigns', icon: Target },
+  { name: 'Alunos', href: '/students', icon: GraduationCap },
   { name: 'Questões', href: '/questions', icon: HelpCircle },
   { name: 'Grupos', href: '/groups', icon: Users },
 ];

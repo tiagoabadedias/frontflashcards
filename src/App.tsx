@@ -15,6 +15,8 @@ import { LandingPage } from './pages/LandingPage';
 import { LandingPage2 } from './pages/LandingPage2';
 import { LandingPage3 } from './pages/LandingPage3';
 import { BusinessLogicPage } from './pages/BusinessLogicPage';
+import { StudentList } from './pages/Students/StudentList';
+import { StudentDetails } from './pages/Students/StudentDetails';
 import { AuthProvider } from './contexts/AuthContext';
 import { PrivateRoute } from './components/PrivateRoute';
 
@@ -67,6 +69,20 @@ function App() {
               <PrivateRoute>
                 <Layout>
                   <CampaignAnalyticsPage />
+                </Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/students" element={
+              <PrivateRoute>
+                <Layout>
+                  <StudentList />
+                </Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/students/:phoneNumber" element={
+              <PrivateRoute>
+                <Layout>
+                  <StudentDetails />
                 </Layout>
               </PrivateRoute>
             } />
